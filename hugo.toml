@@ -1,4 +1,24 @@
 baseURL = 'https://realhath.github.io/'
-languageCode = 'zh-cn'
-title = 'My New Hugo Site'
-theme = 'ananke'
+languageCode = 'zh-CN'
+title = "RealHath的博客"
+theme = 'maupassant'
+
+## 保持分类的原始名字（false会做转小写处理）
+preserveTaxonomyNames = true
+## 是否禁止URL Path转小写
+disablePathToLower = true
+
+
+## 配置网站菜单
+[menu]
+  [[menu.main]]
+    identifier = "archives"
+    name = "归档"
+    url = "/archives/"
+    weight = 3
+
+  [[menu.main]]
+    identifier = "about"
+    name = "关于"
+    url = "/about/"
+    weight = 4
