@@ -1,4 +1,4 @@
-baseURL = 'https://realhath22.github.io/'
+baseURL = 'https://realhath.github.io/'
 languageCode = 'zh-cn'
 title = 'My New Hugo Site'
 theme = 'ananke'
