@@ -11,4 +11,4 @@ type: about
 - 2023.2 ~ 至今 开发一款mmorpg
 
 ## 联系方式
-> https://github.com/RealHath/RealHath.github.io/issues
+> https://github.com/RealHath/RealHath.github.io/discussions
