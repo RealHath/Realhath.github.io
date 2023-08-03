@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>RealHath的博客</title>
+    <link>https://realhath.github.io/</link>
+    <description>Recent content on RealHath的博客</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>zh-CN</language>
+    <lastBuildDate>Wed, 18 Dec 2019 21:55:00 +0800</lastBuildDate><atom:link href="https://realhath.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>关于我</title>
+      <link>https://realhath.github.io/about/</link>
+      <pubDate>Wed, 02 Aug 2023 17:49:48 +0000</pubDate>
+      
+      <guid>https://realhath.github.io/about/</guid>
+      <description>经历 2018.9 ~ 2022.7 就读于华南理工大学广州学院 2021.11 ~ 2023.2 开发一款休闲挂机类小程序游戏，主要负责角色养成系统开发 2023.2 ~ 至今 开发一款mmorpg 联系方式</description>
+    </item>
+    
+    <item>
+      <title>Golang Gin 实战（五）| 接收数组和 Map</title>
+      <link>https://realhath.github.io/post/dsasd/</link>
+      <pubDate>Wed, 18 Dec 2019 21:55:00 +0800</pubDate>
+      
+      <guid>https://realhath.github.io/post/dsasd/</guid>
+      <description>标题 段落内容 标题 段落内容 标题 段落内容 标题 段落内容 标题 段落内容</description>
+    </item>
+    
+    <item>
+      <title>归档</title>
+      <link>https://realhath.github.io/archives/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://realhath.github.io/archives/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>搜索</title>
+      <link>https://realhath.github.io/search/</link>
+      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
+      
+      <guid>https://realhath.github.io/search/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>
