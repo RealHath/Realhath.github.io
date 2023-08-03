@@ -3,7 +3,8 @@
 baseURL = 'https://realhath.github.io/'
 languageCode = 'zh-CN'
 title = "RealHath的博客"
-theme = 'maupassant'
+theme = "maupassant"
+googleAnalytics = ""  # UA-XXXXXXXX-X/G-XXXXXXXXXX
 
 # 保持分类的原始名字（false会做转小写处理）
 preserveTaxonomyNames = true
@@ -11,6 +12,9 @@ preserveTaxonomyNames = true
 disablePathToLower = true
 # 检测中日韩文
 hasCJKLanguage = true
+summaryLength = 140
+
+# disqusShortname = "yourdiscussshortname"  # 是否开启disqus评论，不要和utteranc同时开启
 
 [author]
   name = "RealHath"
@@ -39,11 +43,17 @@ hasCJKLanguage = true
   repo = "https://github.com/RealHath/RealHath.github.io" #换成自己得
   issueTerm = "pathname"
   theme = "github-light"
+
 # 开启版权声明，协议名字和链接都可以换
 [params.cc]
     name = "知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议"
     link = "https://creativecommons.org/licenses/by-nc-nd/4.0/"
 
+# 配置代码高亮
+[markup]
+  [markup.highlight]
+    lineNos = true
+    style = "github"
 
 # 配置网站菜单
 [menu]
@@ -58,9 +68,3 @@ hasCJKLanguage = true
     name = "关于"
     url = "/about/"
     weight = 4
-
-# 配置代码高亮
-[markup]
-  [markup.highlight]
-    lineNos = true
-    style = "github"
