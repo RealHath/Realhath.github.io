@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>auto类型推导、decltype类型推导、返回值类型后置 | RealHath的博客</title>
+    <meta property="og:title" content="auto类型推导、decltype类型推导、返回值类型后置 - RealHath的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2021-03-27T19:55:55&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2021-03-27T19:55:55&#43;08:00'>
+        
+    <meta name="Keywords" content="C&#43;&#43;, Lua, Skynet   TypeScript, Node.js">
+    <meta name="description" content="auto类型推导、decltype类型推导、返回值类型后置">
+        
+    <meta name="author" content="RealHath">
+    <meta property="og:url" content="https://realhath.github.io/post/cpp11/auto%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BCdecltype%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B%E5%90%8E%E7%BD%AE/">
+    
+    <link rel="icon" href='/favicon-16x16.png' type="image/png" sizes="16x16">
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+</head>
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://realhath.github.io/">
+                        RealHath的博客
+                    </a>
+                
+                <p class="description">菜鸟游戏服务器开发</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://realhath.github.io/">Home</a>
+                    
+                    <a  href="https://realhath.github.io/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://realhath.github.io/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;" onmousemove="changeDiv()" onmouseout="resetDiv()">
+    <h2 class="post-toc-title">Table of Contents</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#11-语法规则">1.1 语法规则</a></li>
+    <li><a href="#12-auto高级用法">1.2 auto高级用法</a></li>
+    <li><a href="#13-auto限制">1.3 auto限制</a></li>
+    <li><a href="#14-auto应用">1.4 auto应用</a></li>
+  </ul>
+
+  <ul>
+    <li><a href="#21-规则">2.1 规则</a>
+      <ul>
+        <li><a href="#auto和decltype区别">auto和decltype区别</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    let width = 'auto';
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if (leftPos < 220) {
+                width = leftPos - 10;
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
+    })
+    function changeDiv() {
+        var postToc = $(".post-toc");
+        var leftPos = $("#main").offset().left;
+        if (leftPos < 220) {
+            postToc.css('width', 'auto')
+        }
+    }
+    function resetDiv() {
+        var postToc = $(".post-toc");
+        var leftPos = $("#main").offset().left;
+        if (leftPos < 220) {
+            postToc.css('width', width)
+        }
+    }
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">auto类型推导、decltype类型推导、返回值类型后置</h1>
+        </header>
+        
+  <time datetime="2021-03-27T19:55:55Z" class="post-meta meta-date dt-published">
+    2021-03-27
+  </time>
+
+
+<div class="post-meta meta-category">
+  <span>&nbsp;|</span>
+  
+    <a href='/categories/C&#43;&#43;' target="_blank">C&#43;&#43;</a>
+  
+</div>
+
+
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">&nbsp;|
+                <span id="busuanzi_value_page_pv"></span> <span>reads</span>
+            </span>
+        </div>
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">Table of Contents</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <h1 id="1-auto类型推导">1 auto类型推导</h1>
+<p>auto自动类型推导，编译器在编译时确定变量类型</p>
+<h2 id="11-语法规则">1.1 语法规则</h2>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">auto</span> name <span style="color:#f92672">=</span> value;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>注意：auto 仅仅是一个占位符，在编译器期间它会被真正的类型所替代。或者说，C++ 中的变量必须是有明确类型的，只是这个类型是由编译器自己推导出来的。</p>
+<h2 id="12-auto高级用法">1.2 auto高级用法</h2>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span>  x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">auto</span> <span style="color:#f92672">*</span>p1 <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>x;   <span style="color:#75715e">//p1 为 int *，auto 推导为 int
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">auto</span>  p2 <span style="color:#f92672">=</span> <span style="color:#f92672">&amp;</span>x;   <span style="color:#75715e">//p2 为 int*，auto 推导为 int*
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">auto</span> <span style="color:#f92672">&amp;</span>r1  <span style="color:#f92672">=</span> x;   <span style="color:#75715e">//r1 为 int&amp;，auto 推导为 int
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">auto</span> r2 <span style="color:#f92672">=</span> r1;    <span style="color:#75715e">//r2 为  int，auto 推导为 int
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span>  x <span style="color:#f92672">=</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">const</span>  <span style="color:#66d9ef">auto</span> n <span style="color:#f92672">=</span> x;  <span style="color:#75715e">//n 为 const int ，auto 被推导为 int
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">auto</span> f <span style="color:#f92672">=</span> n;      <span style="color:#75715e">//f 为 const int，auto 被推导为 int（const 属性被抛弃）
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">const</span> <span style="color:#66d9ef">auto</span> <span style="color:#f92672">&amp;</span>r1 <span style="color:#f92672">=</span> x;  <span style="color:#75715e">//r1 为 const int&amp; 类型，auto 被推导为 int
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">auto</span> <span style="color:#f92672">&amp;</span>r2 <span style="color:#f92672">=</span> r1;  <span style="color:#75715e">//r1 为 const int&amp; 类型，auto 被推导为 const int 类型
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>最后我们来简单总结一下 auto 与 const 结合的用法：</p>
+<ul>
+<li>当类型不为引用时，auto 的推导结果将不保留表达式的 const 属性；</li>
+<li>当类型为引用时，auto 的推导结果将保留表达式的 const 属性。</li>
+</ul>
+<h2 id="13-auto限制">1.3 auto限制</h2>
+<ul>
+<li>auto不能在函数参数中使用，因为auto要求必须对变量初始化</li>
+<li>auto不能作用域类的非静态成员变量</li>
+<li>auto不能定义数组</li>
+<li>auto不能作用域模板参数</li>
+</ul>
+<h2 id="14-auto应用">1.4 auto应用</h2>
+<p>STL迭代器！！！</p>
+<h1 id="2-decltype类型推导">2 decltype类型推导</h1>
+<h2 id="21-规则">2.1 规则</h2>
+<ul>
+<li>如果 exp 是一个不被括号( )包围的表达式，或者是一个类成员访问表达式，或者是一个单独的变量，那么 decltype(exp) 的类型就和 exp 一致，这是最普遍最常见的情况。</li>
+<li>如果 exp 是函数调用，那么 decltype(exp) 的类型就和函数返回值的类型一致。</li>
+<li>如果 exp 是一个左值，或者被括号( )包围，那么 decltype(exp) 的类型就是 exp 的引用；假设 exp 的类型为 T，那么 decltype(exp) 的类型就是 T&amp;。</li>
+</ul>
+<h3 id="auto和decltype区别">auto和decltype区别</h3>
+<p>当表达式的类型为引用时，auto 和 decltype 的推导规则也不一样；decltype 会保留引用类型，而 auto 会抛弃引用类型，直接推导出它的原始类型。</p>
+<h1 id="3-返回值类型后置">3 返回值类型后置</h1>
+<p>传入val值，推导出模板T是整型，得知返回值类型是int</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span><span style="color:#f92672">&amp;</span> foo(<span style="color:#66d9ef">int</span><span style="color:#f92672">&amp;</span> i);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">float</span> <span style="color:#a6e22e">foo</span>(<span style="color:#66d9ef">float</span><span style="color:#f92672">&amp;</span> f);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span> <span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">auto</span> func(T<span style="color:#f92672">&amp;</span> val) <span style="color:#f92672">-&gt;</span> <span style="color:#66d9ef">decltype</span>(foo(val))     <span style="color:#75715e">//返回值类型后置
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#a6e22e">foo</span>(val);
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+        </div>
+
+        
+<div class="post-archive">
+    <ul class="post-copyright">
+        <li><strong>Author: </strong><a rel="author" href="https://realhath.github.io/">RealHath</a></li>
+        <li style="word-break:break-all"><strong>Link: </strong><a href="https://realhath.github.io/post/cpp11/auto%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BCdecltype%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B%E5%90%8E%E7%BD%AE/">https://realhath.github.io/post/cpp11/auto%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BCdecltype%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B%E5%90%8E%E7%BD%AE/</a></li>
+        <li><strong>License: </strong>This work is under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>. Kindly fulfill the requirements of the aforementioned License when adapting or creating a derivative of this work.</li>
+    </ul>
+</div>
+<br/>
+
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/cpp/C&#43;&#43;-STL3setmapSTL%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1/">C&#43;&#43; STL3：set、map、STL函数对象</a></li>
+        
+        <li><a href="/post/cpp/C&#43;&#43;-STL2stackqueuelist/">C&#43;&#43; STL2：stack、queue、list</a></li>
+        
+        <li><a href="/post/cpp/C&#43;&#43;-STL1vectorstringdeque/">C&#43;&#43; STL1：vector、string、deque</a></li>
+        
+        <li><a href="/post/cpp/C&#43;&#43;-%E6%A8%A1%E6%9D%BF/">C&#43;&#43; 模板</a></li>
+        
+        <li><a href="/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-3-%E7%BB%A7%E6%89%BF%E5%A4%9A%E6%80%81%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">C&#43;&#43; 核心4-3 继承、多态、文件操作</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/C&#43;&#43;' target="_blank">C&#43;&#43;</a></li>
+                
+                <li><a href='/tags/%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0' target="_blank">编程学习</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "https://github.com/RealHath/RealHath.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+    
+    
+
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2023 <a href="https://realhath.github.io/">RealHath的博客 By RealHath</a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+<style type="text/css">
+div.highlight {
+    position: relative;
+    margin: 1em 0px;
+}
+
+.copy-code {
+    display: none;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(78, 78, 78, 0.8);
+    border-radius: var(--radius);
+    padding: 0 5px;
+    font: inherit;
+    user-select: none;
+    cursor: pointer;
+    border: 0;
+    --radius: 8px;
+}
+
+div.highlight:hover .copy-code,pre:hover .copy-code {
+    display: block;
+}
+
+</style>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='https://realhath.github.io/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://realhath.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">Latest articles</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp11/STL%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="STL容器源码解析" target="_blank">STL容器源码解析</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp11/nullptrshared_ptrunique_ptrweak_ptr/" title="nullptr、shared_ptr、unique_ptr、weak_ptr" target="_blank">nullptr、shared_ptr、unique_ptr、weak_ptr</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp11/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0/" title="右值引用、移动构造" target="_blank">右值引用、移动构造</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp11/for%E5%BE%AA%E7%8E%AFconstexpr%E4%BF%AE%E9%A5%B0%E7%AC%A6long-long/" title="for循环、constexpr修饰符、long long" target="_blank">for循环、constexpr修饰符、long long</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp11/usinglambda%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0/" title="using，lambda匿名函数，模板默认参数" target="_blank">using，lambda匿名函数，模板默认参数</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp11/auto%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BCdecltype%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B%E5%90%8E%E7%BD%AE/" title="auto类型推导、decltype类型推导、返回值类型后置" target="_blank">auto类型推导、decltype类型推导、返回值类型后置</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL3setmapSTL%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1/" title="C&#43;&#43; STL3：set、map、STL函数对象" target="_blank">C&#43;&#43; STL3：set、map、STL函数对象</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL2stackqueuelist/" title="C&#43;&#43; STL2：stack、queue、list" target="_blank">C&#43;&#43; STL2：stack、queue、list</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL1vectorstringdeque/" title="C&#43;&#43; STL1：vector、string、deque" target="_blank">C&#43;&#43; STL1：vector、string、deque</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A8%A1%E6%9D%BF/" title="C&#43;&#43; 模板" target="_blank">C&#43;&#43; 模板</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>Categories</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://realhath.github.io/categories/C&#43;&#43;/">C&#43;&#43; (22)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>Tags</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://realhath.github.io/tags/C&#43;&#43;/">C&#43;&#43;</a>
+    
+    <a href="https://realhath.github.io/tags/C%E8%AF%AD%E8%A8%80/">C语言</a>
+    
+    <a href="https://realhath.github.io/tags/%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0/">编程学习</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">Meta</h3>
+        <ul class="widget-list">
+            <li><a href="https://realhath.github.io/index.xml">RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

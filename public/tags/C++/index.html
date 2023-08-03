@@ -80,6 +80,162 @@
     <article class="post">
         <header>
             <h1 class="post-title">
+                <a href="https://realhath.github.io/post/cpp11/STL%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" target="_blank">STL容器源码解析</a>
+            </h1>
+        </header>
+        
+  <time datetime="2021-09-30T22:10:55Z" class="post-meta meta-date dt-published">
+    2021-09-30
+  </time>
+
+
+<div class="post-meta meta-category">
+  <span>&nbsp;|</span>
+  
+    <a href='/categories/C&#43;&#43;' target="_blank">C&#43;&#43;</a>
+  
+</div>
+
+
+        <div class="post-content">
+            1 STL基础 1.1 头文件 1 2 3 #include &lt;algorithm&gt; #include &lt;functional&gt; using namespace std; cppreference.com 1.2 STL六大部件 容器（container） 分配器（Allocator） 算法（Algorithm） 迭代器（iterator） 适配器（adapter） 仿函数（functor） 1.3 容器分类 序列式容器（sequence） 关联式容器（associat……
+            <p class="readmore"><a href="https://realhath.github.io/post/cpp11/STL%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" target="_blank">Continue reading</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://realhath.github.io/post/cpp11/nullptrshared_ptrunique_ptrweak_ptr/" target="_blank">nullptr、shared_ptr、unique_ptr、weak_ptr</a>
+            </h1>
+        </header>
+        
+  <time datetime="2021-03-28T13:42:55Z" class="post-meta meta-date dt-published">
+    2021-03-28
+  </time>
+
+
+<div class="post-meta meta-category">
+  <span>&nbsp;|</span>
+  
+    <a href='/categories/C&#43;&#43;' target="_blank">C&#43;&#43;</a>
+  
+</div>
+
+
+        <div class="post-content">
+            1 nullptr C++98/03用的是 int* p = NULL NULL是#define NULL 0 nullptr 是 nullptr_t 类型的右值常量，专用于初始化空类型指针。 2 智能指针 C++ 智能指针底层是采用引用计数的方式实现的。 简单的理解，智能指针在申请堆内存空间的同时，会为其配备一个整形值（初始值为 1），每当有新对象使用此堆内存时，该整形值 +1……
+            <p class="readmore"><a href="https://realhath.github.io/post/cpp11/nullptrshared_ptrunique_ptrweak_ptr/" target="_blank">Continue reading</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://realhath.github.io/post/cpp11/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0/" target="_blank">右值引用、移动构造</a>
+            </h1>
+        </header>
+        
+  <time datetime="2021-03-28T13:17:55Z" class="post-meta meta-date dt-published">
+    2021-03-28
+  </time>
+
+
+<div class="post-meta meta-category">
+  <span>&nbsp;|</span>
+  
+    <a href='/categories/C&#43;&#43;' target="_blank">C&#43;&#43;</a>
+  
+</div>
+
+
+        <div class="post-content">
+            1 右值引用 左值的英文简写为“lvalue”，右值的英文简写为“rvalue”。很多人认为它们分别是&quot;left value&quot;、&ldquo;right value&rdquo; 的缩写，其实不然。lvalue 是“locator value”的缩写，可意为存储在内存中、有明确存储地址（可寻址）……
+            <p class="readmore"><a href="https://realhath.github.io/post/cpp11/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0/" target="_blank">Continue reading</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://realhath.github.io/post/cpp11/for%E5%BE%AA%E7%8E%AFconstexpr%E4%BF%AE%E9%A5%B0%E7%AC%A6long-long/" target="_blank">for循环、constexpr修饰符、long long</a>
+            </h1>
+        </header>
+        
+  <time datetime="2021-03-28T10:43:55Z" class="post-meta meta-date dt-published">
+    2021-03-28
+  </time>
+
+
+<div class="post-meta meta-category">
+  <span>&nbsp;|</span>
+  
+    <a href='/categories/C&#43;&#43;' target="_blank">C&#43;&#43;</a>
+  
+</div>
+
+
+        <div class="post-content">
+            1 for 1 2 3 for(表达式 1; 表达式 2; 表达式 3){ //循环体 } 遍历序列的变量都表示的是当前序列中的各个元素。不是迭代器 1 2 3 for (declaration : expression){ //循环体 } 2 constexpr修饰符 验证是否为常量表达式 1 2 constexpr int num = 1 + 2 + 3; int url[num] = {1,2,3,4,5,6}; //正确 修饰函数 1 2 3 4 5 constexpr int display(int x) { //可以添加 using 执行、typede……
+            <p class="readmore"><a href="https://realhath.github.io/post/cpp11/for%E5%BE%AA%E7%8E%AFconstexpr%E4%BF%AE%E9%A5%B0%E7%AC%A6long-long/" target="_blank">Continue reading</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://realhath.github.io/post/cpp11/usinglambda%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0/" target="_blank">using，lambda匿名函数，模板默认参数</a>
+            </h1>
+        </header>
+        
+  <time datetime="2021-03-27T20:39:55Z" class="post-meta meta-date dt-published">
+    2021-03-27
+  </time>
+
+
+<div class="post-meta meta-category">
+  <span>&nbsp;|</span>
+  
+    <a href='/categories/C&#43;&#43;' target="_blank">C&#43;&#43;</a>
+  
+</div>
+
+
+        <div class="post-content">
+            1 using定义别名 typedef不能定义模板 1 2 3 //错误 typedef std::map&lt;std::string, int&gt; map_int_t;// ... typedef std::map&lt;std::string, std::string&gt; map_str_t;// ... 1.1 语法 定义模板 1 2 3 4 5 6 7 8 // 重定义unsigned int typedef unsigned int uint_t; using uint_t = unsigned int; // 重定义std::map typedef std::map&lt;std::string, int&gt; map_int_t; using map_int_t = std::map&lt;std::string, int&gt;; 2 lambda匿名函数 语法 1 2 3 4 [外部变量访问方式说明符] (参数) [mutable] [noexcept/throw()] -&gt; 返回值类型……
+            <p class="readmore"><a href="https://realhath.github.io/post/cpp11/usinglambda%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0/" target="_blank">Continue reading</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
+                <a href="https://realhath.github.io/post/cpp11/auto%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BCdecltype%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B%E5%90%8E%E7%BD%AE/" target="_blank">auto类型推导、decltype类型推导、返回值类型后置</a>
+            </h1>
+        </header>
+        
+  <time datetime="2021-03-27T19:55:55Z" class="post-meta meta-date dt-published">
+    2021-03-27
+  </time>
+
+
+<div class="post-meta meta-category">
+  <span>&nbsp;|</span>
+  
+    <a href='/categories/C&#43;&#43;' target="_blank">C&#43;&#43;</a>
+  
+</div>
+
+
+        <div class="post-content">
+            1 auto类型推导 auto自动类型推导，编译器在编译时确定变量类型 1.1 语法规则 1 auto name = value; 注意：auto 仅仅是一个占位符，在编译器期间它会被真正的类型所替代。或者说，C++ 中的变量必须是有明确类型的，只是这个类型是由编译器自己推导出来的。 1.2 auto高级用法 1 2 3 4 5 int x = 0; auto *p1 = &amp;x; //p1……
+            <p class="readmore"><a href="https://realhath.github.io/post/cpp11/auto%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BCdecltype%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B%E5%90%8E%E7%BD%AE/" target="_blank">Continue reading</a></p>
+        </div>
+    </article>
+    
+    <article class="post">
+        <header>
+            <h1 class="post-title">
                 <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL3setmapSTL%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1/" target="_blank">C&#43;&#43; STL3：set、map、STL函数对象</a>
             </h1>
         </header>
@@ -181,162 +337,6 @@
         </div>
     </article>
     
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-3-%E7%BB%A7%E6%89%BF%E5%A4%9A%E6%80%81%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" target="_blank">C&#43;&#43; 核心4-3 继承、多态、文件操作</a>
-            </h1>
-        </header>
-        
-  <time datetime="2020-12-20T16:18:55Z" class="post-meta meta-date dt-published">
-    2020-12-20
-  </time>
-
-
-<div class="post-meta meta-category">
-  <span>&nbsp;|</span>
-  
-    <a href='/categories/C&#43;&#43;' target="_blank">C&#43;&#43;</a>
-  
-</div>
-
-
-        <div class="post-content">
-            1 继承 1.1 基本语法 基本语法：class 子类 : 继承方式（public, protected, private） 父类 子类又称派生类，父类又称基类 1.2 继承方式 三种继承方式： public 基类中所有 public 成员在派生类中为 public 属性； 基类中所有 protected 成员在派生类中为 protected 属性； 基类中所有 private 成员在派生类中不能使用。 protected 基类中的所有 public 成员在派生类中……
-            <p class="readmore"><a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-3-%E7%BB%A7%E6%89%BF%E5%A4%9A%E6%80%81%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" target="_blank">Continue reading</a></p>
-        </div>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-2-%E5%8F%8B%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/" target="_blank">C&#43;&#43; 核心4-2 友元、运算符重载</a>
-            </h1>
-        </header>
-        
-  <time datetime="2020-12-14T19:48:55Z" class="post-meta meta-date dt-published">
-    2020-12-14
-  </time>
-
-
-<div class="post-meta meta-category">
-  <span>&nbsp;|</span>
-  
-    <a href='/categories/C&#43;&#43;' target="_blank">C&#43;&#43;</a>
-  
-</div>
-
-
-        <div class="post-content">
-            1 友元 私有属性能让类外一些函数或者类访问，用到友元 友元关键字friend 友元三种实现 全局函数做友元 1 2 3 4 class Person { friend void test(); //全局函数做友元 }; 类做友元 1 2 3 4 class Person { friend class People; //类做友元 }; 成员函数做友元 1 2 3 4 class Person { friend void People::test(); //别的类的成员函数做友元 }; 2 运算符重载 运算符重载不会影响运算符本……
-            <p class="readmore"><a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-2-%E5%8F%8B%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/" target="_blank">Continue reading</a></p>
-        </div>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-1-%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1-%E5%B0%81%E8%A3%85%E5%AF%B9%E8%B1%A1/" target="_blank">C&#43;&#43; 核心4-1 类和对象-封装、对象</a>
-            </h1>
-        </header>
-        
-  <time datetime="2020-11-16T20:06:55Z" class="post-meta meta-date dt-published">
-    2020-11-16
-  </time>
-
-
-<div class="post-meta meta-category">
-  <span>&nbsp;|</span>
-  
-    <a href='/categories/C&#43;&#43;' target="_blank">C&#43;&#43;</a>
-  
-</div>
-
-
-        <div class="post-content">
-            1 类和对象 面向对象三大特性：封装、继承、多态 1.1 封装 1.1.1 封装的意义 封装的意义： 将属性和行为作为一个整体，表现生活中的事物 将属性和行为加以权限控制 为了保证封装性，通常将成员变量性设置成私有，然后用get、set方法修改获取，可以在方法里做一些判断，比直接修改成员变量更好 1 2 3 4 5 6 7 8……
-            <p class="readmore"><a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-1-%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1-%E5%B0%81%E8%A3%85%E5%AF%B9%E8%B1%A1/" target="_blank">Continue reading</a></p>
-        </div>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%833-%E5%87%BD%E6%95%B0%E6%8F%90%E9%AB%98/" target="_blank">C&#43;&#43; 核心3 函数提高</a>
-            </h1>
-        </header>
-        
-  <time datetime="2020-11-15T20:35:55Z" class="post-meta meta-date dt-published">
-    2020-11-15
-  </time>
-
-
-<div class="post-meta meta-category">
-  <span>&nbsp;|</span>
-  
-    <a href='/categories/C&#43;&#43;' target="_blank">C&#43;&#43;</a>
-  
-</div>
-
-
-        <div class="post-content">
-            1 函数提高 1.1 函数默认参数 注意 如果某个位置已经有默认参数，在这个位置往后都要有默认值 1 2 3 int fun(int a, int b = 1, int c = 2); fun(10); //调用的时候能少传参数 如果函数声明有默认参数，函数实现就不能有默认参数 声明和实现只能有一个带默认参数 1 2 3 4 5 6 int fun(int a = 10, int b = 10); //声明 int fun(int a = 10, int b = 10) //实现，……
-            <p class="readmore"><a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%833-%E5%87%BD%E6%95%B0%E6%8F%90%E9%AB%98/" target="_blank">Continue reading</a></p>
-        </div>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%832-%E5%BC%95%E7%94%A8/" target="_blank">C&#43;&#43; 核心2 引用</a>
-            </h1>
-        </header>
-        
-  <time datetime="2020-11-14T16:54:55Z" class="post-meta meta-date dt-published">
-    2020-11-14
-  </time>
-
-
-<div class="post-meta meta-category">
-  <span>&nbsp;|</span>
-  
-    <a href='/categories/C&#43;&#43;' target="_blank">C&#43;&#43;</a>
-  
-</div>
-
-
-        <div class="post-content">
-            1 引用 https://www.runoob.com/cplusplus/cpp-references.html https://www.cnblogs.com/zhxmdefj/p/11185124.html 作用：给变量取别名，同一块内存不同变量名 语法：数据类型 &amp;别名 = 原名 1.1 与指针的区别 不存在空引用。引用必须连接到一块合法的内存。 一旦引用被初始化为一个对象，就不能被指向到另一个对象。指针可以在任何时候指向到另一个对象。 引用必须在创建时被初始化。指针可以在任何时间被初……
-            <p class="readmore"><a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%832-%E5%BC%95%E7%94%A8/" target="_blank">Continue reading</a></p>
-        </div>
-    </article>
-    
-    <article class="post">
-        <header>
-            <h1 class="post-title">
-                <a href="https://realhath.github.io/post/cpp/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B61-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%86%85%E5%AD%98%E5%9B%9B%E5%8C%BA/" target="_blank">C语言进阶1 数据类型和内存四区</a>
-            </h1>
-        </header>
-        
-  <time datetime="2020-11-14T15:15:03Z" class="post-meta meta-date dt-published">
-    2020-11-14
-  </time>
-
-
-<div class="post-meta meta-category">
-  <span>&nbsp;|</span>
-  
-    <a href='/categories/C&#43;&#43;' target="_blank">C&#43;&#43;</a>
-  
-</div>
-
-
-        <div class="post-content">
-            1 头文件编写模板 1.1 防止头文件重复包含 #pragma once 只编译一次 好处是，你不必再担心宏名冲突了，当然也就不会出现宏名冲突引发的奇怪问题。大型项目的编译速度也因此提高了一些。 缺点就是如果某个头文件有多份拷贝，本方法不能保证他们不被重复包含。 不支持跨平台！ 1 2 //防止头文件重复包含 #pragma once #ifndef 条件编译 缺……
-            <p class="readmore"><a href="https://realhath.github.io/post/cpp/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B61-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%86%85%E5%AD%98%E5%9B%9B%E5%8C%BA/" target="_blank">Continue reading</a></p>
-        </div>
-    </article>
-    
 
     
 
@@ -352,6 +352,10 @@
     
     <li >
         <a href="https://realhath.github.io/tags/C&#43;&#43;/page/2/">2</a>
+    </li>
+    
+    <li >
+        <a href="https://realhath.github.io/tags/C&#43;&#43;/page/3/">3</a>
     </li>
     
 
@@ -413,6 +417,30 @@
 <ul class="widget-list">
     
     <li>
+        <a href="https://realhath.github.io/post/cpp11/STL%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="STL容器源码解析" target="_blank">STL容器源码解析</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp11/nullptrshared_ptrunique_ptrweak_ptr/" title="nullptr、shared_ptr、unique_ptr、weak_ptr" target="_blank">nullptr、shared_ptr、unique_ptr、weak_ptr</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp11/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0/" title="右值引用、移动构造" target="_blank">右值引用、移动构造</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp11/for%E5%BE%AA%E7%8E%AFconstexpr%E4%BF%AE%E9%A5%B0%E7%AC%A6long-long/" title="for循环、constexpr修饰符、long long" target="_blank">for循环、constexpr修饰符、long long</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp11/usinglambda%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0/" title="using，lambda匿名函数，模板默认参数" target="_blank">using，lambda匿名函数，模板默认参数</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp11/auto%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BCdecltype%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B%E5%90%8E%E7%BD%AE/" title="auto类型推导、decltype类型推导、返回值类型后置" target="_blank">auto类型推导、decltype类型推导、返回值类型后置</a>
+    </li>
+    
+    <li>
         <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL3setmapSTL%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1/" title="C&#43;&#43; STL3：set、map、STL函数对象" target="_blank">C&#43;&#43; STL3：set、map、STL函数对象</a>
     </li>
     
@@ -428,30 +456,6 @@
         <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A8%A1%E6%9D%BF/" title="C&#43;&#43; 模板" target="_blank">C&#43;&#43; 模板</a>
     </li>
     
-    <li>
-        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-3-%E7%BB%A7%E6%89%BF%E5%A4%9A%E6%80%81%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" title="C&#43;&#43; 核心4-3 继承、多态、文件操作" target="_blank">C&#43;&#43; 核心4-3 继承、多态、文件操作</a>
-    </li>
-    
-    <li>
-        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-2-%E5%8F%8B%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/" title="C&#43;&#43; 核心4-2 友元、运算符重载" target="_blank">C&#43;&#43; 核心4-2 友元、运算符重载</a>
-    </li>
-    
-    <li>
-        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-1-%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1-%E5%B0%81%E8%A3%85%E5%AF%B9%E8%B1%A1/" title="C&#43;&#43; 核心4-1 类和对象-封装、对象" target="_blank">C&#43;&#43; 核心4-1 类和对象-封装、对象</a>
-    </li>
-    
-    <li>
-        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%833-%E5%87%BD%E6%95%B0%E6%8F%90%E9%AB%98/" title="C&#43;&#43; 核心3 函数提高" target="_blank">C&#43;&#43; 核心3 函数提高</a>
-    </li>
-    
-    <li>
-        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%832-%E5%BC%95%E7%94%A8/" title="C&#43;&#43; 核心2 引用" target="_blank">C&#43;&#43; 核心2 引用</a>
-    </li>
-    
-    <li>
-        <a href="https://realhath.github.io/post/cpp/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B61-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%86%85%E5%AD%98%E5%9B%9B%E5%8C%BA/" title="C语言进阶1 数据类型和内存四区" target="_blank">C语言进阶1 数据类型和内存四区</a>
-    </li>
-    
 </ul>
     </section>
 
@@ -461,7 +465,7 @@
         <h3 class="widget-title"><a href='/categories/'>Categories</a></h3>
 <ul class="widget-list">
     
-    <li><a href="https://realhath.github.io/categories/C&#43;&#43;/">C&#43;&#43; (16)</a></li>
+    <li><a href="https://realhath.github.io/categories/C&#43;&#43;/">C&#43;&#43; (22)</a></li>
     
 </ul>
     </section>

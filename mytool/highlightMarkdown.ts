@@ -31,12 +31,12 @@ function highlightMarkdownFiles(dirPath: string): void {
                 }
 
                 // 将替换后的内容写回文件
-                // fs.writeFileSync(filePath, highlightedContent, 'utf-8');
+                fs.writeFileSync(filePath, highlightedContent, 'utf-8');
             }
         }
     });
 }
 
 // 调用函数并传入要处理的路径
-const targetDir = '/root/myblob/content/post/cpp'; // 修改为你的目标路径
+const targetDir = '/root/myblob/content/post/cpp11'; // 修改为你的目标路径
 highlightMarkdownFiles(targetDir);
