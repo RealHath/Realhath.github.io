@@ -1,0 +1,1067 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>C&#43;&#43; 核心4-1 类和对象-封装、对象 | RealHath的博客</title>
+    <meta property="og:title" content="C&#43;&#43; 核心4-1 类和对象-封装、对象 - RealHath的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2020-11-16T20:06:55&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2020-11-16T20:06:55&#43;08:00'>
+        
+    <meta name="Keywords" content="C&#43;&#43;, Lua, Skynet   TypeScript, Node.js">
+    <meta name="description" content="C&#43;&#43; 核心4-1 类和对象-封装、对象">
+        
+    <meta name="author" content="RealHath">
+    <meta property="og:url" content="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-1-%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1-%E5%B0%81%E8%A3%85%E5%AF%B9%E8%B1%A1/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+        <link rel="stylesheet" href='/css/douban.css'>
+    
+        <link rel="stylesheet" href='/css/other.css'>
+    
+</head>
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://realhath.github.io/">
+                        RealHath的博客
+                    </a>
+                
+                <p class="description">菜鸟游戏服务器开发</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://realhath.github.io/">Home</a>
+                    
+                    <a  href="https://realhath.github.io/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://realhath.github.io/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;" onmousemove="changeDiv()" onmouseout="resetDiv()">
+    <h2 class="post-toc-title">Table of Contents</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#11-封装">1.1 封装</a>
+      <ul>
+        <li><a href="#111-封装的意义">1.1.1 封装的意义</a></li>
+        <li><a href="#112-访问权限">1.1.2 访问权限</a></li>
+        <li><a href="#113-struct和class的区别">1.1.3 struct和class的区别</a></li>
+        <li><a href="#114-成员属性设为私有">1.1.4 成员属性设为私有</a></li>
+      </ul>
+    </li>
+    <li><a href="#12-对象的初始化和清理">1.2 对象的初始化和清理</a>
+      <ul>
+        <li><a href="#121-构造函数和析构函数">1.2.1 构造函数和析构函数</a></li>
+        <li><a href="#122-构造函数的分类及调用">1.2.2 构造函数的分类及调用</a></li>
+        <li><a href="#123-拷贝构造函数的调用时机">1.2.3 拷贝构造函数的调用时机</a></li>
+        <li><a href="#124-构造函数调用规则">1.2.4 构造函数调用规则</a></li>
+        <li><a href="#hahahugoshortcodes0hbhb">HAHAHUGOSHORTCODEs0HBHB</a></li>
+        <li><a href="#126-初始化列表">1.2.6 初始化列表</a></li>
+        <li><a href="#127-类对象作为类成员">1.2.7 类对象作为类成员</a></li>
+        <li><a href="#128-静态成员">1.2.8 静态成员</a></li>
+      </ul>
+    </li>
+    <li><a href="#13-c对象模型和this指针">1.3 C++对象模型和this指针</a>
+      <ul>
+        <li><a href="#131-成员变量和成员函数分开存储">1.3.1 成员变量和成员函数分开存储</a></li>
+        <li><a href="#132-this指针">1.3.2 this指针</a></li>
+        <li><a href="#133-空指针访问成员函数">1.3.3 空指针访问成员函数</a></li>
+        <li><a href="#134-const修饰成员函数">1.3.4 const修饰成员函数</a></li>
+      </ul>
+    </li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    let width = 'auto';
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if (leftPos < 220) {
+                width = leftPos - 10;
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
+    })
+    function changeDiv() {
+        var postToc = $(".post-toc");
+        var leftPos = $("#main").offset().left;
+        if (leftPos < 220) {
+            postToc.css('width', 'auto')
+        }
+    }
+    function resetDiv() {
+        var postToc = $(".post-toc");
+        var leftPos = $("#main").offset().left;
+        if (leftPos < 220) {
+            postToc.css('width', width)
+        }
+    }
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">C&#43;&#43; 核心4-1 类和对象-封装、对象</h1>
+        </header>
+        
+  <time datetime="2020-11-16T20:06:55Z" class="post-meta meta-date dt-published">
+    2020-11-16
+  </time>
+
+
+<div class="post-meta meta-category">
+  <span>&nbsp;|</span>
+  
+    <a href='/categories/C&#43;&#43;' target="_blank">C&#43;&#43;</a>
+  
+</div>
+
+
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">&nbsp;|
+                <span id="busuanzi_value_page_pv"></span> <span>reads</span>
+            </span>
+        </div>
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">Table of Contents</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <h1 id="1-类和对象">1 类和对象</h1>
+<p>面向对象三大特性：封装、继承、多态</p>
+<h2 id="11-封装">1.1 封装</h2>
+<h3 id="111-封装的意义">1.1.1 封装的意义</h3>
+<p>封装的意义：</p>
+<ul>
+<li>将属性和行为作为一个整体，表现生活中的事物</li>
+<li>将属性和行为加以权限控制</li>
+</ul>
+<p>为了保证封装性，通常将成员变量性设置成私有，然后用get、set方法修改获取，可以在方法里做一些判断，比直接修改成员变量更好</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Circle</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">private</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">double</span> r;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">double</span> getS()
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">double</span> r <span style="color:#f92672">=</span> getR();
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">3.14</span> <span style="color:#f92672">*</span> r <span style="color:#f92672">*</span> r;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getC</span>()
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">double</span> r <span style="color:#f92672">=</span> getR();
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">3.14</span> <span style="color:#f92672">*</span> r <span style="color:#f92672">*</span> <span style="color:#ae81ff">2</span>;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">double</span> <span style="color:#a6e22e">getR</span>()
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">return</span> <span style="color:#66d9ef">this</span><span style="color:#f92672">-&gt;</span>r;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setR</span>(<span style="color:#66d9ef">double</span> r)
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		<span style="color:#66d9ef">this</span><span style="color:#f92672">-&gt;</span>r <span style="color:#f92672">=</span> r;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="112-访问权限">1.1.2 访问权限</h3>
+<p>不写修饰符默认是私有权限</p>
+<p>三种权限：</p>
+<ul>
+<li>public 公共权限</li>
+</ul>
+<p>成员在类内可以访问，在类外也能访问</p>
+<ul>
+<li>protected 保护权限</li>
+</ul>
+<p>成员在类内可以访问，在类外不能访问</p>
+<p>继承中子类可以访问父类的保护权限的成员</p>
+<ul>
+<li>private 私有权限</li>
+</ul>
+<p>成员在类内可以访问，在类外不能访问</p>
+<p>继承中子类不能访问父类的私有权限的成员</p>
+<h3 id="113-struct和class的区别">1.1.3 struct和class的区别</h3>
+<ul>
+<li>struct默认权限是共有</li>
+<li>class默认权限是私有</li>
+</ul>
+<h3 id="114-成员属性设为私有">1.1.4 成员属性设为私有</h3>
+<p>为了保证封装性，通常将成员变量性设置成私有，然后用get、set方法修改获取，可以在方法里做一些判断，比直接修改成员变量更好</p>
+<p>可以自己控制成员变量读写，以及输入数据正确性</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">setR</span>(<span style="color:#66d9ef">double</span> r)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">if</span>(r <span style="color:#f92672">&lt;</span> <span style="color:#ae81ff">0</span>)
+</span></span><span style="display:flex;"><span>	    reutrn;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">this</span><span style="color:#f92672">-&gt;</span>r <span style="color:#f92672">=</span> r;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="12-对象的初始化和清理">1.2 对象的初始化和清理</h2>
+<h3 id="121-构造函数和析构函数">1.2.1 构造函数和析构函数</h3>
+<ul>
+<li>构造函数：主要作用在于创建对象时为对象的成员变量赋值，构造函数由编译器自动调用，无需手动调用</li>
+<li>析构函数：主要作用在于对象<strong>销毁前</strong>系统自动调用，执行一些清理工作</li>
+</ul>
+<hr>
+<p>构造函数语法：类名(可以写参数){}</p>
+<ul>
+<li>构造函数没有返回值也不用写void</li>
+<li>函数名称和类名相同</li>
+<li>构造函数可以有参数，可以重载</li>
+<li>程序调用对象时自动调用，只会调用一次</li>
+</ul>
+<p>析构函数语法：~类名(){}</p>
+<ul>
+<li>析构函数，没有返回值不用写void</li>
+<li>函数名称和类名相同，名称前加波浪符~</li>
+<li>析构函数不可以有参数，不能重载</li>
+<li>程序销毁对象时自动调用，只会调用一次</li>
+</ul>
+<h3 id="122-构造函数的分类及调用">1.2.2 构造函数的分类及调用</h3>
+<p>分类：</p>
+<ul>
+<li>按参数分为：有参构造和无参构造</li>
+</ul>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">9
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>	Circle()	<span style="color:#75715e">//构造
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	{
+</span></span><span style="display:flex;"><span>		cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;构造函数！&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	
+</span></span><span style="display:flex;"><span>	Circle(<span style="color:#66d9ef">int</span> a)	<span style="color:#75715e">//构造
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	{
+</span></span><span style="display:flex;"><span>		cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;构造函数！&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>	}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>按类型分为：普通构造和拷贝构造</li>
+</ul>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>	Circle(<span style="color:#66d9ef">const</span> Circle<span style="color:#f92672">&amp;</span> p)	    <span style="color:#75715e">//拷贝构造
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>	{
+</span></span><span style="display:flex;"><span>		r <span style="color:#f92672">=</span> p.r;
+</span></span><span style="display:flex;"><span>	}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>调用：</p>
+<ul>
+<li>括号法
+调用无参构造的时候不要加()，会被编译器认为是函数声明</li>
+</ul>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Circle <span style="color:#a6e22e">c</span>();     <span style="color:#75715e">//错误
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Circle c1;      <span style="color:#75715e">//无参构造函数
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Circle <span style="color:#a6e22e">c2</span>(<span style="color:#ae81ff">5</span>);   <span style="color:#75715e">//有参
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Circle <span style="color:#a6e22e">c3</span>(c2);  <span style="color:#75715e">//拷贝构造
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>显示法</li>
+</ul>
+<p>注意事项：</p>
+<ol>
+<li>匿名函数创建完会立刻销毁</li>
+<li>不要用拷贝构造函数创建匿名对象，编译器会认为你在声明对象</li>
+</ol>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Circle(<span style="color:#ae81ff">5</span>);              <span style="color:#75715e">//匿名对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Circle c1 <span style="color:#f92672">=</span> Circle();   <span style="color:#75715e">//无参
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>隐式转换法</li>
+</ul>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Circle c1 <span style="color:#f92672">=</span> <span style="color:#ae81ff">5</span>;      <span style="color:#75715e">//调用有参构造
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Circle c2 <span style="color:#f92672">=</span> c1;     <span style="color:#75715e">//拷贝
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="123-拷贝构造函数的调用时机">1.2.3 拷贝构造函数的调用时机</h3>
+<ul>
+<li>使用一个创建完毕的对象来初始化一个新对象</li>
+<li>值传递的方式给函数参数传值</li>
+<li>值方式返回局部对象</li>
+</ul>
+<h3 id="124-构造函数调用规则">1.2.4 构造函数调用规则</h3>
+<p>构造函数调用规则：</p>
+<ul>
+<li>如果用户定义有参构造函数，C++不再提供默认无参构造，但是会提供默认拷贝构造</li>
+<li>如果用户定义拷贝构造函数，C++不会再提供其他构造函数</li>
+</ul>
+<h3 id="hahahugoshortcodes0hbhb"><span style="background-color: yellow;">1.2.5 深拷贝和浅拷贝</span></h3>
+<ul>
+<li>浅拷贝：简单的赋值拷贝操作</li>
+</ul>
+<p>编译器默认使用赋值的拷贝构造</p>
+<p>如果两个对象都有指针变量，调用拷贝构造的时候，两个对象的指针变量会指向同一块堆区内存，一个对象对内存操作，另一个也会变化</p>
+<p>
+        <img class="mx-auto" alt="" src="https://img2018.cnblogs.com/blog/774371/201907/774371-20190716091842178-448859259.jpg" />   
+    </p>
+<ul>
+<li>深拷贝：在堆区申请空间，再进行拷贝</li>
+</ul>
+<p>如果两个对象都有指针变量，调用拷贝构造的时候，两个对象的指针变量会指向各自的堆区内存，一个对象对内存操作，另一个不会变化</p>
+<p>解决方法：自己实现拷贝构造函数，在拷贝构造中创建堆区内存</p>
+<p>
+        <img class="mx-auto" alt="" src="https://img2018.cnblogs.com/blog/774371/201907/774371-20190716092012374-350888378.jpg" />   
+    </p>
+<h3 id="126-初始化列表">1.2.6 初始化列表</h3>
+<p>语法：构造函数（形参列表）：成员变量1（值1），成员变量2（值2）&hellip;{ }</p>
+<p>初始化列表构造函数</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>	Person(<span style="color:#66d9ef">int</span> a, <span style="color:#66d9ef">int</span> b, <span style="color:#66d9ef">int</span> c) <span style="color:#f92672">:</span>m_A(a), m_B(b), m_C(c)
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>传统构造函数</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>	Person(<span style="color:#66d9ef">int</span> a, <span style="color:#66d9ef">int</span> b, <span style="color:#66d9ef">int</span> c)
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		m_A <span style="color:#f92672">=</span> a;
+</span></span><span style="display:flex;"><span>		m_B <span style="color:#f92672">=</span> b;
+</span></span><span style="display:flex;"><span>		m_C <span style="color:#f92672">=</span> c;
+</span></span><span style="display:flex;"><span>	}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="127-类对象作为类成员">1.2.7 类对象作为类成员</h3>
+<p>程序执行顺序：栈的进出顺序</p>
+<p>先在Person定义Phone类型变量 -&gt; 走Phone类的构造 -&gt; 走Person类构造 -&gt; 走Person类析构 -&gt; 走Phone类析构</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">16
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">17
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">18
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">19
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">20
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">21
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">22
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">23
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">24
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">25
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">26
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">27
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">28
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">29
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">30
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">31
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">32
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">33
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">34
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">35
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Phone</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>	Phone()
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Phone!&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">~</span>Phone()
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;~Phone!&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Person</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>	Phone phone;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	Person()
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;Person!&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>	<span style="color:#f92672">~</span>Person()
+</span></span><span style="display:flex;"><span>	{
+</span></span><span style="display:flex;"><span>		cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;~Person!&#34;</span> <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span><span style="display:flex;"><span>	}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">int</span> <span style="color:#a6e22e">main</span>()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>	Person a;
+</span></span><span style="display:flex;"><span>	<span style="color:#66d9ef">return</span> <span style="color:#ae81ff">0</span>;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>结果：</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Phone<span style="color:#f92672">!</span>
+</span></span><span style="display:flex;"><span>Person<span style="color:#f92672">!</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">~</span>Person<span style="color:#f92672">!</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">~</span>Phone<span style="color:#f92672">!</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="128-静态成员">1.2.8 静态成员</h3>
+<ul>
+<li>静态成员变量
+<ul>
+<li>所有对象共享同一份数据</li>
+<li>在编译阶段分配内存</li>
+<li>类内声明，类外初始化</li>
+</ul>
+</li>
+<li>静态成员函数
+<ul>
+<li>所有对象共享同一个函数</li>
+<li>静态成员函数只能访问静态成员变量</li>
+</ul>
+</li>
+</ul>
+<h2 id="13-c对象模型和this指针">1.3 C++对象模型和this指针</h2>
+<h3 id="131-成员变量和成员函数分开存储">1.3.1 成员变量和成员函数分开存储</h3>
+<p>在C++中，类内的成员变量和成员函数分开存储，只有非静态成员变量才属于类对象</p>
+<p>//空对象占用内存为1</p>
+<p>//C++编译器给每个空对象分配一个字节空间，为了区分空对象占内存的位置。</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Empty</span>
+</span></span><span style="display:flex;"><span>{};
+</span></span><span style="display:flex;"><span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;sizeof Empty = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#66d9ef">sizeof</span>(Empty) <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>//占用内存为4</p>
+<p>//只算int A的大小，大小是4</p>
+<p>静态成员存储在全局区，不算在对象大小。</p>
+<p>函数不算在对象大小</p>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">8
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Empty</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> A;          <span style="color:#75715e">//非静态成员变量，属于类的对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">int</span> B;   <span style="color:#75715e">//静态成员变量，不属于类对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">func1</span>(){}   <span style="color:#75715e">//非静态成员函数，不属于类对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>    <span style="color:#66d9ef">static</span> <span style="color:#66d9ef">void</span> <span style="color:#a6e22e">func2</span>(){}    <span style="color:#75715e">//静态成员函数，不属于类对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>};
+</span></span><span style="display:flex;"><span>cout <span style="color:#f92672">&lt;&lt;</span> <span style="color:#e6db74">&#34;sizeof Empty = &#34;</span> <span style="color:#f92672">&lt;&lt;</span> <span style="color:#66d9ef">sizeof</span>(Empty) <span style="color:#f92672">&lt;&lt;</span> endl;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="132-this指针">1.3.2 this指针</h3>
+<p>this指针指向被调用的成员函数所属的对象</p>
+<p>this指针是隐含每一个非静态成员函数内的一种指针</p>
+<p>this指针不需要定义，直接使用即可</p>
+<p>this指针的用途</p>
+<ul>
+<li>当形参和成员变量同名时，可以用this指针区分</li>
+</ul>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> age;
+</span></span><span style="display:flex;"><span>Person(<span style="color:#66d9ef">int</span> age)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">this</span> <span style="color:#f92672">-&gt;</span> age <span style="color:#f92672">=</span> age;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ul>
+<li>在类的非静态成员函数中返回对象本身，可以使用return *this</li>
+</ul>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Person<span style="color:#f92672">&amp;</span> test()
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">return</span> <span style="color:#f92672">*</span><span style="color:#66d9ef">this</span>;   <span style="color:#75715e">//返回本身对象
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h3 id="133-空指针访问成员函数">1.3.3 空指针访问成员函数</h3>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Person</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> age;
+</span></span><span style="display:flex;"><span>    <span style="color:#66d9ef">int</span> <span style="color:#a6e22e">getAge</span>()
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">return</span> age;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Person <span style="color:#f92672">*</span>p <span style="color:#f92672">=</span> NULL;
+</span></span><span style="display:flex;"><span>p.getAge();     <span style="color:#75715e">//报错
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><p>对象执行getAge方法的时候，return age其实是return this-&gt;age，因为是空指针调用这个方法，所以this是空，所以报错</p>
+<h3 id="134-const修饰成员函数">1.3.4 const修饰成员函数</h3>
+<p>常函数：</p>
+<ul>
+<li>成员函数后加const成为常函数</li>
+<li>常函数内不可以修改成员属性</li>
+<li>成员属性声明时加关键字mutable后，在常函数中可以修改</li>
+</ul>
+<p>常对象：</p>
+<ul>
+<li>声明对象前加const成为常对象</li>
+<li>常对象只能调用常函数</li>
+</ul>
+
+        </div>
+
+        
+<div class="post-archive">
+    <ul class="post-copyright">
+        <li><strong>Author: </strong><a rel="author" href="https://realhath.github.io/">RealHath</a></li>
+        <li style="word-break:break-all"><strong>Link: </strong><a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-1-%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1-%E5%B0%81%E8%A3%85%E5%AF%B9%E8%B1%A1/">https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-1-%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1-%E5%B0%81%E8%A3%85%E5%AF%B9%E8%B1%A1/</a></li>
+        <li><strong>License: </strong>This work is under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>. Kindly fulfill the requirements of the aforementioned License when adapting or creating a derivative of this work.</li>
+    </ul>
+</div>
+<br/>
+
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%833-%E5%87%BD%E6%95%B0%E6%8F%90%E9%AB%98/">C&#43;&#43; 核心3 函数提高</a></li>
+        
+        <li><a href="/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%832-%E5%BC%95%E7%94%A8/">C&#43;&#43; 核心2 引用</a></li>
+        
+        <li><a href="/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%831-%E5%86%85%E5%AD%98%E6%A8%A1%E5%9E%8B/">C&#43;&#43; 核心1 内存模型</a></li>
+        
+        <li><a href="/post/cpp/C&#43;&#43;-%E5%9F%BA%E7%A1%804-%E7%BB%93%E6%9E%84%E4%BD%93/">C&#43;&#43; 基础4 结构体</a></li>
+        
+        <li><a href="/post/cpp/C&#43;&#43;-%E5%9F%BA%E7%A1%803-%E6%8C%87%E9%92%88/">C&#43;&#43; 基础3 指针</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/C&#43;&#43;' target="_blank">C&#43;&#43;</a></li>
+                
+                <li><a href='/tags/%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0' target="_blank">编程学习</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "https://github.com/RealHath/RealHath.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+    
+    
+
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2023 <a href="https://realhath.github.io/">RealHath的博客 By RealHath</a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+<style type="text/css">
+div.highlight {
+    position: relative;
+    margin: 1em 0px;
+}
+
+.copy-code {
+    display: none;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(78, 78, 78, 0.8);
+    border-radius: var(--radius);
+    padding: 0 5px;
+    font: inherit;
+    user-select: none;
+    cursor: pointer;
+    border: 0;
+    --radius: 8px;
+}
+
+div.highlight:hover .copy-code,pre:hover .copy-code {
+    display: block;
+}
+
+</style>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+    <script src='/js/douban.js'></script>
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='https://realhath.github.io/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://realhath.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">Latest articles</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL3setmapSTL%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1/" title="C&#43;&#43; STL3：set、map、STL函数对象" target="_blank">C&#43;&#43; STL3：set、map、STL函数对象</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL2stackqueuelist/" title="C&#43;&#43; STL2：stack、queue、list" target="_blank">C&#43;&#43; STL2：stack、queue、list</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL1vectorstringdeque/" title="C&#43;&#43; STL1：vector、string、deque" target="_blank">C&#43;&#43; STL1：vector、string、deque</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A8%A1%E6%9D%BF/" title="C&#43;&#43; 模板" target="_blank">C&#43;&#43; 模板</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-3-%E7%BB%A7%E6%89%BF%E5%A4%9A%E6%80%81%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" title="C&#43;&#43; 核心4-3 继承、多态、文件操作" target="_blank">C&#43;&#43; 核心4-3 继承、多态、文件操作</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-2-%E5%8F%8B%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/" title="C&#43;&#43; 核心4-2 友元、运算符重载" target="_blank">C&#43;&#43; 核心4-2 友元、运算符重载</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-1-%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1-%E5%B0%81%E8%A3%85%E5%AF%B9%E8%B1%A1/" title="C&#43;&#43; 核心4-1 类和对象-封装、对象" target="_blank">C&#43;&#43; 核心4-1 类和对象-封装、对象</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%833-%E5%87%BD%E6%95%B0%E6%8F%90%E9%AB%98/" title="C&#43;&#43; 核心3 函数提高" target="_blank">C&#43;&#43; 核心3 函数提高</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%832-%E5%BC%95%E7%94%A8/" title="C&#43;&#43; 核心2 引用" target="_blank">C&#43;&#43; 核心2 引用</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B61-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%86%85%E5%AD%98%E5%9B%9B%E5%8C%BA/" title="C语言进阶1 数据类型和内存四区" target="_blank">C语言进阶1 数据类型和内存四区</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>Categories</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://realhath.github.io/categories/C&#43;&#43;/">C&#43;&#43; (16)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>Tags</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://realhath.github.io/tags/C&#43;&#43;/">C&#43;&#43;</a>
+    
+    <a href="https://realhath.github.io/tags/C%E8%AF%AD%E8%A8%80/">C语言</a>
+    
+    <a href="https://realhath.github.io/tags/%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0/">编程学习</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">Meta</h3>
+        <ul class="widget-list">
+            <li><a href="https://realhath.github.io/index.xml">RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

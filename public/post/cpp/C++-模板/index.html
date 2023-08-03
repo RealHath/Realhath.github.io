@@ -1,0 +1,818 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    
+    <meta name="referrer" content="no-referrer-when-downgrade">
+    
+
+    <title>C&#43;&#43; 模板 | RealHath的博客</title>
+    <meta property="og:title" content="C&#43;&#43; 模板 - RealHath的博客">
+    <meta property="og:type" content="article">
+        
+    <meta property="article:published_time" content='2021-03-08T09:07:55&#43;08:00'>
+        
+        
+    <meta property="article:modified_time" content='2021-03-08T09:07:55&#43;08:00'>
+        
+    <meta name="Keywords" content="C&#43;&#43;, Lua, Skynet   TypeScript, Node.js">
+    <meta name="description" content="C&#43;&#43; 模板">
+        
+    <meta name="author" content="RealHath">
+    <meta property="og:url" content="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A8%A1%E6%9D%BF/">
+    <link rel="shortcut icon" href='/favicon.ico'  type="image/x-icon">
+
+    <link rel="stylesheet" href='/css/normalize.css'>
+    <link rel="stylesheet" href='/css/style.css'>
+    <script type="text/javascript" src="//cdn.bootcdn.net/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+    
+    
+    
+    
+    
+    
+        <link rel="stylesheet" href='/css/douban.css'>
+    
+        <link rel="stylesheet" href='/css/other.css'>
+    
+</head>
+
+<body>
+    <header id="header" class="clearfix">
+    <div class="container">
+        <div class="col-group">
+            <div class="site-name ">
+                
+                    <a id="logo" href="https://realhath.github.io/">
+                        RealHath的博客
+                    </a>
+                
+                <p class="description">菜鸟游戏服务器开发</p>
+            </div>
+            <div>
+                <nav id="nav-menu" class="clearfix">
+                    <a class="current" href="https://realhath.github.io/">Home</a>
+                    
+                    <a  href="https://realhath.github.io/archives/" title="归档">归档</a>
+                    
+                    <a  href="https://realhath.github.io/about/" title="关于">关于</a>
+                    
+                </nav>
+            </div>
+        </div>
+    </div>
+</header>
+
+    <div id="body">
+        <div class="container">
+            <div class="col-group">
+
+                <div class="col-8" id="main">
+                    
+<div class="res-cons">
+    <style type="text/css">
+    .post-toc {
+        position: fixed;
+        width: 200px;
+        margin-left: -210px;
+        padding: 5px 10px;
+        font-family: Athelas, STHeiti, Microsoft Yahei, serif;
+        font-size: 12px;
+        border: 1px solid rgba(0, 0, 0, .07);
+        border-radius: 5px;
+        background-color: rgba(255, 255, 255, 0.98);
+        background-clip: padding-box;
+        -webkit-box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        box-shadow: 1px 1px 2px rgba(0, 0, 0, .125);
+        word-wrap: break-word;
+        white-space: nowrap;
+        -webkit-box-sizing: border-box;
+        box-sizing: border-box;
+        z-index: 999;
+        cursor: pointer;
+        max-height: 70%;
+        overflow-y: auto;
+        overflow-x: hidden;
+    }
+
+    .post-toc .post-toc-title {
+        width: 100%;
+        margin: 0 auto;
+        font-size: 20px;
+        font-weight: 400;
+        text-transform: uppercase;
+        text-align: center;
+    }
+
+    .post-toc .post-toc-content {
+        font-size: 15px;
+    }
+
+    .post-toc .post-toc-content>nav>ul {
+        margin: 10px 0;
+    }
+
+    .post-toc .post-toc-content ul {
+        padding-left: 20px;
+        list-style: square;
+        margin: 0.5em;
+        line-height: 1.8em;
+    }
+
+    .post-toc .post-toc-content ul ul {
+        padding-left: 15px;
+        display: none;
+    }
+
+    @media print,
+    screen and (max-width:1057px) {
+        .post-toc {
+            display: none;
+        }
+    }
+</style>
+<div class="post-toc" style="position: absolute; top: 188px;" onmousemove="changeDiv()" onmouseout="resetDiv()">
+    <h2 class="post-toc-title">Table of Contents</h2>
+    <div class="post-toc-content">
+        <nav id="TableOfContents">
+  <ul>
+    <li><a href="#11-基本语法">1.1 基本语法</a></li>
+    <li><a href="#12-普通函数和函数模板的区别">1.2 普通函数和函数模板的区别</a></li>
+    <li><a href="#13-普通函数与函数模板的调用规则">1.3 普通函数与函数模板的调用规则</a></li>
+    <li><a href="#14-类模板">1.4 类模板</a></li>
+    <li><a href="#15-类模板和函数模板的区别">1.5 类模板和函数模板的区别</a></li>
+    <li><a href="#16--类模板对象做函数参数">1.6  类模板对象做函数参数</a></li>
+    <li><a href="#17-类模板与继承">1.7 类模板与继承</a></li>
+    <li><a href="#18-类模板成员函数类外实现">1.8 类模板成员函数类外实现</a>
+      <ul>
+        <li><a href="#181-类模板分文件编写">1.8.1 类模板分文件编写</a></li>
+      </ul>
+    </li>
+    <li><a href="#19-类模板和友元">1.9 类模板和友元</a></li>
+  </ul>
+</nav>
+    </div>
+</div>
+<script type="text/javascript">
+    let width = 'auto';
+    $(document).ready(function () {
+        var postToc = $(".post-toc");
+        if (postToc.length) {
+            var leftPos = $("#main").offset().left;
+            if (leftPos < 220) {
+                width = leftPos - 10;
+                postToc.css({ "width": leftPos - 10, "margin-left": (0 - leftPos) })
+            }
+
+            var t = postToc.offset().top - 20,
+                a = {
+                    start: {
+                        position: "absolute",
+                        top: t
+                    },
+                    process: {
+                        position: "fixed",
+                        top: 20
+                    },
+                };
+            $(window).scroll(function () {
+                var e = $(window).scrollTop();
+                e < t ? postToc.css(a.start) : postToc.css(a.process)
+            })
+        }
+
+        if ($("#TableOfContents").children().length < 1) {
+            $(".post-toc").remove();
+        }
+    })
+    function changeDiv() {
+        var postToc = $(".post-toc");
+        var leftPos = $("#main").offset().left;
+        if (leftPos < 220) {
+            postToc.css('width', 'auto')
+        }
+    }
+    function resetDiv() {
+        var postToc = $(".post-toc");
+        var leftPos = $("#main").offset().left;
+        if (leftPos < 220) {
+            postToc.css('width', width)
+        }
+    }
+</script>
+    <article class="post">
+        <header>
+            <h1 class="post-title">C&#43;&#43; 模板</h1>
+        </header>
+        
+  <time datetime="2021-03-08T09:07:55Z" class="post-meta meta-date dt-published">
+    2021-03-08
+  </time>
+
+
+<div class="post-meta meta-category">
+  <span>&nbsp;|</span>
+  
+    <a href='/categories/C&#43;&#43;' target="_blank">C&#43;&#43;</a>
+  
+</div>
+
+
+        
+        <div class="post-meta">
+            <span id="busuanzi_container_page_pv">&nbsp;|
+                <span id="busuanzi_value_page_pv"></span> <span>reads</span>
+            </span>
+        </div>
+        
+        
+        <div class="clear" style="display: none">
+            <div class="toc-article">
+                <div class="toc-title">Table of Contents</div>
+            </div>
+        </div>
+        
+        <div class="post-content">
+            <h1 id="1-模板">1 模板</h1>
+<h2 id="11-基本语法">1.1 基本语法</h2>
+<ol>
+<li>自动类型推导</li>
+</ol>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">7
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">typename</span> T<span style="color:#f92672">&gt;</span>    <span style="color:#75715e">//声明一个模板，告诉编译器通用数据类型T
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> mySwap(T <span style="color:#f92672">&amp;</span>a, T <span style="color:#f92672">&amp;</span>b)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    T temp <span style="color:#f92672">=</span> a;
+</span></span><span style="display:flex;"><span>    a <span style="color:#f92672">=</span> b;
+</span></span><span style="display:flex;"><span>    b <span style="color:#f92672">=</span> temp;
+</span></span><span style="display:flex;"><span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>显示指定类型</li>
+</ol>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>mySwap<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>(a,b);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="12-普通函数和函数模板的区别">1.2 普通函数和函数模板的区别</h2>
+<ol>
+<li>普通函数调用可以发生<span style="background-color: yellow;">隐式类型转换</span></li>
+<li>函数模板用自动类型推导，不可以发生隐式类型转换</li>
+</ol>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> mySwap(T <span style="color:#f92672">&amp;</span>a, T <span style="color:#f92672">&amp;</span>b)
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>函数模板用显示指定类型，可以发生隐式类型转换</li>
+</ol>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>mySwap<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>(a,b);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="13-普通函数与函数模板的调用规则">1.3 普通函数与函数模板的调用规则</h2>
+<ol>
+<li>如果函数模板和普通函数都可以调用，优先调用普通函数</li>
+</ol>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">int</span> a, b;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">mySwap</span>(<span style="color:#66d9ef">int</span> <span style="color:#f92672">&amp;</span>a, <span style="color:#66d9ef">int</span> <span style="color:#f92672">&amp;</span>b){}   <span style="color:#75715e">//优先调用
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">mySwap</span>(T <span style="color:#f92672">&amp;</span>a, T <span style="color:#f92672">&amp;</span>b){}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>可以通过空模板参数列表强制调用函数模板</li>
+</ol>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>mySwap<span style="color:#f92672">&lt;&gt;</span>(a,b);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>函数模板可以发生函数重载（overload）</li>
+</ol>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">mySwap</span>(T <span style="color:#f92672">&amp;</span>a, T <span style="color:#f92672">&amp;</span>b){}
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">mySwap</span>(T <span style="color:#f92672">&amp;</span>a, T <span style="color:#f92672">&amp;</span>b, T <span style="color:#f92672">&amp;</span>c){}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="4">
+<li>如果函数模板可以产生更好的匹配，优先调用函数模板</li>
+</ol>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">char</span> a, b;
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">mySwap</span>(<span style="color:#66d9ef">int</span> <span style="color:#f92672">&amp;</span>a, <span style="color:#66d9ef">int</span> <span style="color:#f92672">&amp;</span>b){}   
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">mySwap</span>(T <span style="color:#f92672">&amp;</span>a, T <span style="color:#f92672">&amp;</span>b){}       <span style="color:#75715e">//优先调用
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="14-类模板">1.4 类模板</h2>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">13
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">14
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">15
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">NameType</span>, <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">AgeType</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Person</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    NameType name;
+</span></span><span style="display:flex;"><span>    AgeType age;
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>    Person(NameType name, AgeType age)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">-&gt;</span>name <span style="color:#f92672">=</span> name;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">-&gt;</span>age <span style="color:#f92672">=</span> age;
+</span></span><span style="display:flex;"><span>    }
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Person<span style="color:#f92672">&lt;</span>string, <span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> p1 <span style="color:#f92672">=</span> Person(<span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#ae81ff">99</span>);
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="15-类模板和函数模板的区别">1.5 类模板和函数模板的区别</h2>
+<ol>
+<li>类模板没有自动类型推导，只能用显示类型</li>
+</ol>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Person p1 <span style="color:#f92672">=</span> Person(<span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#ae81ff">99</span>);     <span style="color:#75715e">//错误
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>Person<span style="color:#f92672">&lt;</span>string, <span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> p1 <span style="color:#f92672">=</span> Person(<span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#ae81ff">99</span>);       <span style="color:#75715e">//正确
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>类模板在模板参数列表中可以有默认参数</li>
+</ol>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">5
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Person(NameType name <span style="color:#f92672">=</span> <span style="color:#e6db74">&#34;..&#34;</span>, AgeType age <span style="color:#f92672">=</span> <span style="color:#ae81ff">999</span>)
+</span></span><span style="display:flex;"><span>    {
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">-&gt;</span>name <span style="color:#f92672">=</span> name;
+</span></span><span style="display:flex;"><span>        <span style="color:#66d9ef">this</span><span style="color:#f92672">-&gt;</span>age <span style="color:#f92672">=</span> age;
+</span></span><span style="display:flex;"><span>    }
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="16--类模板对象做函数参数">1.6  类模板对象做函数参数</h2>
+<p>三种传入方式：</p>
+<ol>
+<li>指定传入类型（常用</li>
+</ol>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span>Person<span style="color:#f92672">&lt;</span>string, <span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> p1 <span style="color:#f92672">=</span> Person(<span style="color:#e6db74">&#34;name&#34;</span>, <span style="color:#ae81ff">99</span>);
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> <span style="color:#a6e22e">print</span>(Person<span style="color:#f92672">&lt;</span>string, <span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span> <span style="color:#f92672">&amp;</span>p);     <span style="color:#75715e">//指定
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>参数模板化</li>
+</ol>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">T1</span>, <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">T2</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> print(Person<span style="color:#f92672">&lt;</span>T1, T2<span style="color:#f92672">&gt;</span> <span style="color:#f92672">&amp;</span>p);     <span style="color:#75715e">//参数模板化
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="3">
+<li>整个类模板化</li>
+</ol>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">2
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">T</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">void</span> print(T <span style="color:#f92672">&amp;</span>p);     <span style="color:#75715e">//类模板化
+</span></span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="17-类模板与继承">1.7 类模板与继承</h2>
+<ol>
+<li>子类显示指定类型</li>
+</ol>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">T</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Base</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    T m;
+</span></span><span style="display:flex;"><span>};
+</span></span><span style="display:flex;"><span><span style="color:#75715e">//class Son:public Base         //错误
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Son</span><span style="color:#f92672">:</span><span style="color:#66d9ef">public</span> Base<span style="color:#f92672">&lt;</span><span style="color:#66d9ef">int</span><span style="color:#f92672">&gt;</span>      <span style="color:#75715e">//正确
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>{
+</span></span><span style="display:flex;"><span>    
+</span></span><span style="display:flex;"><span>};
+</span></span></code></pre></td></tr></table>
+</div>
+</div><ol start="2">
+<li>子类也变成模板类</li>
+</ol>
+<h2 id="18-类模板成员函数类外实现">1.8 类模板成员函数类外实现</h2>
+<div class="highlight"><div style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;">
+<table style="border-spacing:0;padding:0;margin:0;border:0;"><tr><td style="vertical-align:top;padding:0;margin:0;border:0;">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 1
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 2
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 3
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 4
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 5
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 6
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 7
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 8
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f"> 9
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">10
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">11
+</span><span style="white-space:pre;-webkit-user-select:none;user-select:none;margin-right:0.4em;padding:0 0.4em 0 0.4em;color:#7f7f7f">12
+</span></code></pre></td>
+<td style="vertical-align:top;padding:0;margin:0;border:0;;width:100%">
+<pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-cpp" data-lang="cpp"><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">T1</span>, <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">T2</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">Person</span>
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">public</span><span style="color:#f92672">:</span>
+</span></span><span style="display:flex;"><span>    Person(T1 name, T2 age){}
+</span></span><span style="display:flex;"><span>}
+</span></span><span style="display:flex;"><span>  
+</span></span><span style="display:flex;"><span><span style="color:#66d9ef">template</span><span style="color:#f92672">&lt;</span><span style="color:#66d9ef">class</span> <span style="color:#a6e22e">T1</span>, <span style="color:#66d9ef">class</span> <span style="color:#a6e22e">T2</span><span style="color:#f92672">&gt;</span>
+</span></span><span style="display:flex;"><span>Person<span style="color:#f92672">&lt;</span>T1, T2<span style="color:#f92672">&gt;::</span>Person(T1 name, T2 age)
+</span></span><span style="display:flex;"><span>{
+</span></span><span style="display:flex;"><span>    <span style="color:#75715e">//code
+</span></span></span><span style="display:flex;"><span><span style="color:#75715e"></span>}
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>总结：</p>
+<p>确认作用域和参数列表Person&lt;T1, T2&gt;::</p>
+<h3 id="181-类模板分文件编写">1.8.1 类模板分文件编写</h3>
+<p>问题：类模板写在另一个cpp中，其他cpp要调用类模板中的方法，出现链接错误</p>
+<p>原因：由于类模板中成员函数在程序运行后成员函数才被创建，而编译器要在链接是识别成员函数，相当于调用了一个没定义的函数，导致错误</p>
+<p>解决方法：将头文件和函数写在同一个文件里，后缀名是.hpp，直观看出是类模板文件</p>
+<h2 id="19-类模板和友元">1.9 类模板和友元</h2>
+
+        </div>
+
+        
+<div class="post-archive">
+    <ul class="post-copyright">
+        <li><strong>Author: </strong><a rel="author" href="https://realhath.github.io/">RealHath</a></li>
+        <li style="word-break:break-all"><strong>Link: </strong><a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A8%A1%E6%9D%BF/">https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A8%A1%E6%9D%BF/</a></li>
+        <li><strong>License: </strong>This work is under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>. Kindly fulfill the requirements of the aforementioned License when adapting or creating a derivative of this work.</li>
+    </ul>
+</div>
+<br/>
+
+
+
+        
+
+<div class="post-archive">
+    <h2>See Also</h2>
+    <ul class="listing">
+        
+        <li><a href="/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-3-%E7%BB%A7%E6%89%BF%E5%A4%9A%E6%80%81%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/">C&#43;&#43; 核心4-3 继承、多态、文件操作</a></li>
+        
+        <li><a href="/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-2-%E5%8F%8B%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/">C&#43;&#43; 核心4-2 友元、运算符重载</a></li>
+        
+        <li><a href="/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-1-%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1-%E5%B0%81%E8%A3%85%E5%AF%B9%E8%B1%A1/">C&#43;&#43; 核心4-1 类和对象-封装、对象</a></li>
+        
+        <li><a href="/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%833-%E5%87%BD%E6%95%B0%E6%8F%90%E9%AB%98/">C&#43;&#43; 核心3 函数提高</a></li>
+        
+        <li><a href="/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%832-%E5%BC%95%E7%94%A8/">C&#43;&#43; 核心2 引用</a></li>
+        
+    </ul>
+</div>
+
+
+        <div class="post-meta meta-tags">
+            
+            <ul class="clearfix">
+                
+                <li><a href='/tags/C&#43;&#43;' target="_blank">C&#43;&#43;</a></li>
+                
+                <li><a href='/tags/%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0' target="_blank">编程学习</a></li>
+                
+            </ul>
+            
+        </div>
+    </article>
+    
+    
+
+    
+    
+    <div class="post bg-white">
+      <script src="https://utteranc.es/client.js"
+            repo= "https://github.com/RealHath/RealHath.github.io"
+            issue-term="pathname"
+            theme="github-light"
+            crossorigin="anonymous"
+            async>
+      </script>
+    </div>
+    
+    
+    
+
+</div>
+
+                    <footer id="footer">
+    <div>
+        &copy; 2023 <a href="https://realhath.github.io/">RealHath的博客 By RealHath</a>
+        
+    </div>
+    <br />
+    <div>
+        <div class="github-badge">
+            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
+        </div>
+        <div class="github-badge">
+            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
+        </div>
+    </div>
+</footer>
+
+
+    
+    
+    <script type="text/javascript">
+        window.MathJax = {
+            tex2jax: {
+                inlineMath: [['$', '$']],
+                processEscapes: true
+                }
+            };
+    </script>
+    <script src='//cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-MML-AM_CHTML' async></script>
+
+<a id="rocket" href="#top"></a>
+<script type="text/javascript" src='/js/totop.js?v=0.0.0' async=""></script>
+<style type="text/css">
+div.highlight {
+    position: relative;
+    margin: 1em 0px;
+}
+
+.copy-code {
+    display: none;
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    color: rgba(255, 255, 255, 0.8);
+    background: rgba(78, 78, 78, 0.8);
+    border-radius: var(--radius);
+    padding: 0 5px;
+    font: inherit;
+    user-select: none;
+    cursor: pointer;
+    border: 0;
+    --radius: 8px;
+}
+
+div.highlight:hover .copy-code,pre:hover .copy-code {
+    display: block;
+}
+
+</style>
+<script>
+    document.querySelectorAll('pre > code').forEach((codeblock) => {
+        const container = codeblock.parentNode.parentNode;
+
+        const copybutton = document.createElement('button');
+        copybutton.classList.add('copy-code');
+        copybutton.innerHTML = 'copy';
+
+        function copyingDone() {
+            copybutton.innerHTML = 'copied!';
+            setTimeout(() => {
+                copybutton.innerHTML = 'copy';
+            }, 2000);
+        }
+
+        copybutton.addEventListener('click', (cb) => {
+            if ('clipboard' in navigator) {
+                navigator.clipboard.writeText(codeblock.textContent);
+                copyingDone();
+                return;
+            }
+
+            const range = document.createRange();
+            range.selectNodeContents(codeblock);
+            const selection = window.getSelection();
+            selection.removeAllRanges();
+            selection.addRange(range);
+            try {
+                document.execCommand('copy');
+                copyingDone();
+            } catch (e) { };
+            selection.removeRange(range);
+        });
+
+        if (container.classList.contains("highlight")) {
+            container.appendChild(copybutton);
+        } else if (container.parentNode.firstChild == container) {
+            
+        } else if (codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.nodeName == "TABLE") {
+            
+            codeblock.parentNode.parentNode.parentNode.parentNode.parentNode.appendChild(copybutton);
+        } else {
+            
+            codeblock.parentNode.appendChild(copybutton);
+        }
+    });
+</script>
+
+
+    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
+
+
+
+
+    <script src='/js/douban.js'></script>
+
+                </div>
+
+                <div id="secondary">
+    <section class="widget">
+        <form id="search" action='https://realhath.github.io/search' method="get" accept-charset="utf-8" target="_blank" _lpchecked="1">
+      
+      <input type="text" name="q" maxlength="20" placeholder="Search">
+      <input type="hidden" name="sitesearch" value="https://realhath.github.io/">
+      <button type="submit" class="submit icon-search"></button>
+</form>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title">Latest articles</h3>
+<ul class="widget-list">
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL3setmapSTL%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1/" title="C&#43;&#43; STL3：set、map、STL函数对象" target="_blank">C&#43;&#43; STL3：set、map、STL函数对象</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL2stackqueuelist/" title="C&#43;&#43; STL2：stack、queue、list" target="_blank">C&#43;&#43; STL2：stack、queue、list</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL1vectorstringdeque/" title="C&#43;&#43; STL1：vector、string、deque" target="_blank">C&#43;&#43; STL1：vector、string、deque</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A8%A1%E6%9D%BF/" title="C&#43;&#43; 模板" target="_blank">C&#43;&#43; 模板</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-3-%E7%BB%A7%E6%89%BF%E5%A4%9A%E6%80%81%E6%96%87%E4%BB%B6%E6%93%8D%E4%BD%9C/" title="C&#43;&#43; 核心4-3 继承、多态、文件操作" target="_blank">C&#43;&#43; 核心4-3 继承、多态、文件操作</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-2-%E5%8F%8B%E5%85%83%E8%BF%90%E7%AE%97%E7%AC%A6%E9%87%8D%E8%BD%BD/" title="C&#43;&#43; 核心4-2 友元、运算符重载" target="_blank">C&#43;&#43; 核心4-2 友元、运算符重载</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%834-1-%E7%B1%BB%E5%92%8C%E5%AF%B9%E8%B1%A1-%E5%B0%81%E8%A3%85%E5%AF%B9%E8%B1%A1/" title="C&#43;&#43; 核心4-1 类和对象-封装、对象" target="_blank">C&#43;&#43; 核心4-1 类和对象-封装、对象</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%833-%E5%87%BD%E6%95%B0%E6%8F%90%E9%AB%98/" title="C&#43;&#43; 核心3 函数提高" target="_blank">C&#43;&#43; 核心3 函数提高</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A0%B8%E5%BF%832-%E5%BC%95%E7%94%A8/" title="C&#43;&#43; 核心2 引用" target="_blank">C&#43;&#43; 核心2 引用</a>
+    </li>
+    
+    <li>
+        <a href="https://realhath.github.io/post/cpp/C%E8%AF%AD%E8%A8%80%E8%BF%9B%E9%98%B61-%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E5%92%8C%E5%86%85%E5%AD%98%E5%9B%9B%E5%8C%BA/" title="C语言进阶1 数据类型和内存四区" target="_blank">C语言进阶1 数据类型和内存四区</a>
+    </li>
+    
+</ul>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/categories/'>Categories</a></h3>
+<ul class="widget-list">
+    
+    <li><a href="https://realhath.github.io/categories/C&#43;&#43;/">C&#43;&#43; (16)</a></li>
+    
+</ul>
+    </section>
+
+    <section class="widget">
+        <h3 class="widget-title"><a href='/tags/'>Tags</a></h3>
+<div class="tagcloud">
+    
+    <a href="https://realhath.github.io/tags/C&#43;&#43;/">C&#43;&#43;</a>
+    
+    <a href="https://realhath.github.io/tags/C%E8%AF%AD%E8%A8%80/">C语言</a>
+    
+    <a href="https://realhath.github.io/tags/%E7%BC%96%E7%A8%8B%E5%AD%A6%E4%B9%A0/">编程学习</a>
+    
+</div>
+    </section>
+
+    
+
+    <section class="widget">
+        <h3 class="widget-title">Meta</h3>
+        <ul class="widget-list">
+            <li><a href="https://realhath.github.io/index.xml">RSS</a></li>
+        </ul>
+    </section>
+</div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
