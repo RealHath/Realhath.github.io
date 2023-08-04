@@ -1,13 +1,12 @@
 ---
 title: About
 description: 菜鸡游戏服务器开发
-date: '2023-08-02 17:49:48'
+date: 2023-08-02
 aliases:
   - about-us
   - about-hugo
   - contact
 license: CC BY-NC-ND
-lastmod: '2023-08-02 17:49:48'
 menu:
     main: 
         weight: -90
