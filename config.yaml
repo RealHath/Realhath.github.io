@@ -83,7 +83,7 @@ params:
             adminLabel:
 
         utterances:
-            repo: https://github.com/RealHath/RealHath.github.io
+            repo: RealHath/RealHath.github.io
             issueTerm: pathname
             label: blob
 
