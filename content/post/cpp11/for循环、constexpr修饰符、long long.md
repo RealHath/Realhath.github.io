@@ -1,13 +1,14 @@
 ---
+author : "RealHath"
 title: for循环、constexpr修饰符、long long
-tags: ["C++", "编程学习"]
+tags: ["C++", "编程学习", "C++11"]
 categories: ["C++"]
 date: "2021-03-28 10:43:55"
 toc: true
 ---
 
 
-# 1 for
+## for
 ```cpp
 for(表达式 1; 表达式 2; 表达式 3){
     //循环体
@@ -21,7 +22,7 @@ for (declaration : expression){
 }
 ```
 
-# 2 constexpr修饰符
+## constexpr修饰符
 验证是否为常量表达式
 
 ```cpp
@@ -42,10 +43,10 @@ constexpr int display(int x) {
 
 修饰模板。略
 
-## constexpr和const区别
+### constexpr和const区别
 const修饰符是给变量添加只读属性，可以通过引用或者指针的方式修改它的值
 
 constexpr修饰符指定是常量
 
-# 3 long long
+## long long
 64位（8个字节）

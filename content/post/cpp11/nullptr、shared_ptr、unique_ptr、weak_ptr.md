@@ -1,20 +1,21 @@
 ---
+author : "RealHath"
 title: nullptr、shared_ptr、unique_ptr、weak_ptr
-tags: ["C++", "编程学习"]
+tags: ["C++", "编程学习", "C++11"]
 categories: ["C++"]
 date: "2021-03-28 13:42:55"
 toc: true
 ---
 
 
-# 1 nullptr
+## nullptr
 C++98/03用的是 int* p = NULL
 
 NULL是#define NULL 0
 
 nullptr 是 nullptr_t 类型的右值常量，专用于初始化空类型指针。
 
-# 2 智能指针
+## 智能指针
 C++ 智能指针底层是采用引用计数的方式实现的。
 
 简单的理解，智能指针在申请堆内存空间的同时，会为其配备一个整形值（初始值为 1），每当有新对象使用此堆内存时，该整形值 +1；反之，每当使用此堆内存的对象被释放时，该整形值减 1。当堆空间对应的整形值为 0 时，即表明不再有对象使用它，该堆空间就会被释放掉。
@@ -24,7 +25,7 @@ using namespace std;
 ```
 {{< highlight >}}智能指针都是类模板{{< /highlight >}}
 
-## 2.1 shared_ptr<T>
+### shared_ptr<T>
 和 unique_ptr、weak_ptr 不同之处在于，{{< highlight >}}多个 shared_ptr 智能指针可以共同使用同一块堆内存{{< /highlight >}}。
 
 并且，由于该类型智能指针在实现上采用的是引用计数机制，即便有一个 shared_ptr 指针放弃了堆内存的“使用权”（引用计数减 1），也不会影响其他指向同一堆内存的 shared_ptr 指针（只有引用计数为 0 时，堆内存才会被自动释放）。
@@ -66,7 +67,7 @@ void deleteInt(int*p) {
 std::shared_ptr<int> p7(new int[10], deleteInt);
 ```
 
-## 2.2 unique_ptr<T>
+### unique_ptr<T>
 和 shared_ptr 指针最大的不同之处在于，{{< highlight >}}unique_ptr 指针指向的堆内存无法同其它 unique_ptr 共享{{< /highlight >}}，也就是说，每个 unique_ptr 指针都独自拥有对其所指堆内存空间的所有权。
 
 ---
@@ -98,7 +99,7 @@ std::unique_ptr<int, myDel> p6(new int);
 
 unique_str.release()方法{{< highlight >}}释放内存所有权，但不释放内存{{< /highlight >}}，返回值是内存地址。注意{{< highlight >}}内存泄漏{{< /highlight >}}
 
-## 2.3 weak_ptr<T>
+### weak_ptr<T>
 C++11标准虽然将 weak_ptr 定位为智能指针的一种，但该类型指针通常不单独使用（没有实际用处），只能和 shared_ptr 类型指针搭配使用。
 
 甚至于，我们可以将 weak_ptr 类型指针视为 shared_ptr 指针的一种辅助工具，借助 weak_ptr 类型指针， 我们可以获取 shared_ptr 指针的一些状态信息，比如有多少指向相同的 shared_ptr 指针、shared_ptr 指针指向的堆内存是否已经被释放等等。
@@ -117,7 +118,7 @@ std::weak_ptr<int> wp3 (sp);
 
 weak_ptr<T> 模板类没有重载 * 和 -> 运算符，因此 {{< highlight >}}weak_ptr 类型指针只能访问某一 shared_ptr 指针指向的堆内存空间，无法对其进行修改。{{< /highlight >}}
 
-### 循环引用
+#### 循环引用
 双向链表的前驱指针和后继指针如果使用共享指针，会让前驱或后继节点强引用加一，导致无法析构。\
 将共享指针换成弱指针，会让前驱节点或后继节点弱引用加一，不影响析构。\
 当强引用为0时时才能释放内存。

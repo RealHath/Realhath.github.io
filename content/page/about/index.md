@@ -1,8 +1,18 @@
 ---
-title: "关于我"
-date: 2023-08-02 17:49:48
+title: About
 description: 菜鸡游戏服务器开发
-type: about
+date: '2023-08-02 17:49:48'
+aliases:
+  - about-us
+  - about-hugo
+  - contact
+license: CC BY-NC-ND
+lastmod: '2023-08-02 17:49:48'
+menu:
+    main: 
+        weight: -90
+        params:
+            icon: user
 ---
 
 ## 经历

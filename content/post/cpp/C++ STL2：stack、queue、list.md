@@ -1,4 +1,5 @@
 ---
+author : "RealHath"
 title: "C++ STL2：stack、queue、list"
 tags: ["C++", "编程学习"]
 categories: ["C++"]
@@ -7,12 +8,12 @@ toc: true
 ---
 
 
-# 1 stack容器
+## stack容器
 先进后出，后进先出
 
 ![](https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=2061339795,2433726968&fm=11&gp=0.jpg)
 
-## 1.1 stack常用接口
+### stack常用接口
 - stack<T> stk;//默认构造
 - stack(const stack &stk);//拷贝构造
 - stack& operator=(const stack &stk);//等号赋值
@@ -22,12 +23,12 @@ toc: true
 - empty();//判断是否为空
 - size();//返回栈大小
 
-# 2 queue容器
+## queue容器
 先进先出，后进后出
 
 ![](https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=4294954133,234080532&fm=11&gp=0.jpg)
 
-## 2.1 queue常用接口 
+### queue常用接口 
 - queue<T>queT;//queue采用模板类实现，queue对象的默认构造形式
 - queue(const queue &que);//拷贝构造函数
 - queue& operator=(const queue &que);//重载等号操作符
@@ -38,36 +39,36 @@ toc: true
 - empty();//判断是否为空
 - size();//返回栈大小
 
-# 3 list容器
+## list容器
 
-## 3.1 list基本概念
+### list基本概念
 list容器时双向循环列表
 
 ![](https://img-blog.csdnimg.cn/20190519113720296.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2xpbnhpODY5Mw==,size_16,color_FFFFFF,t_70)
 
-### list和vector的区别，本质上是链表和数组的区别
+#### list和vector的区别，本质上是链表和数组的区别
 - list采用动态存储分配，随时创建删除，vector采用静态内存分配，开辟一块连续内存
 - list插入删除方便，vector插入删除还要移动大量元素
 - list占用内存多（指针域），遍历慢
 
-## 3.2 list构造函数
+### list构造函数
 - list<T> l;//无参构造
 - list(beg, end);//迭代器构造
 - list(n, elem);//创建n个elem的list
 - list (const list& lis);//拷贝构造
 
-## 3.3 list赋值和交换
+### list赋值和交换
 - assign(begin,end);//将【begin，end】区间的数据拷贝给自身
 - assign(n,elem);//将n个elem拷贝赋值给自身
 - list& operator=(const list &lst);//重载等号操作符
 - swap(lst);//将list与本身的元素互换
 
-## 3.4 list大小操作
+### list大小操作
 - size();//返回元素容器中元素个数
 - empty();//判断容器是否为空
 - resize(int num ,elem);//重新指定容器长度为num，若容器变长，则以elem值填充新位置，未指定elem值则以默认值0填充，若容器变短，则末尾超出容器长度的元素被删除
 
-## 3.5 list插入和删除
+### list插入和删除
 - push_back(elem);//在容器尾部加入一个元素
 - pop_back();//删除容器中最后一个元素
 - push_front(elem);//在容器开头插入一个元素
@@ -80,11 +81,11 @@ list容器时双向循环列表
 - erase(pos);//删除pos位置的数据，返回下一个数据的位置
 - remove(elem);//删除容器中所有与elem匹配的元素
 
-## 3.6 list 数据存取
+### list 数据存取
 - front();//返回第一个元素
 - back();//返回最后一个元素
 
-## 3.7 list 反转和排序
+### list 反转和排序
 - reverse();//反转链表
 - sort();//list排序
 

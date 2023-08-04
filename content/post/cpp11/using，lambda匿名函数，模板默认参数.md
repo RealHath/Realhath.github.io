@@ -1,13 +1,14 @@
 ---
+author : "RealHath"
 title: using，lambda匿名函数，模板默认参数
-tags: ["C++", "编程学习"]
+tags: ["C++", "编程学习", "C++11"]
 categories: ["C++"]
 date: "2021-03-27 20:39:55"
 toc: true
 ---
 
 
-# 1 using定义别名
+## using定义别名
 typedef不能定义模板
 ```cpp
 //错误
@@ -15,7 +16,7 @@ typedef std::map<std::string, int> map_int_t;// ...
 typedef std::map<std::string, std::string> map_str_t;// ...
 ```
 
-## 1.1 语法
+### 语法
 定义模板
 ```cpp
 // 重定义unsigned int
@@ -28,7 +29,7 @@ typedef std::map<std::string, int> map_int_t;
 using map_int_t = std::map<std::string, int>;
 ```
 
-# 2 lambda匿名函数
+## lambda匿名函数
 语法
 ```cpp
 [外部变量访问方式说明符] (参数) [mutable] [noexcept/throw()] -> 返回值类型
@@ -55,7 +56,7 @@ sort(num, num + 4, [=](int x, int y) -> bool { return x < y; });
 
 ```
 
-# 3 模板默认参数
+## 模板默认参数
 ```cpp
 template <typename R = int, typename U = double>
 R func(U val)
