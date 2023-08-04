@@ -1,10 +1,10 @@
 # 参考 https://gohugo.io/getting-started/configuration/
 
 baseURL = 'https://realhath.github.io/'
-languageCode = 'zh-CN'
+languageCode = 'en-us'
 title = "RealHath的博客"
 theme = "maupassant"
-googleAnalytics = ""  # UA-XXXXXXXX-X/G-XXXXXXXXXX
+# googleAnalytics = ""  # UA-XXXXXXXX-X/G-XXXXXXXXXX
 
 # 保持分类的原始名字（false会做转小写处理）
 preserveTaxonomyNames = true
@@ -23,9 +23,9 @@ summaryLength = 140
   author = "RealHath"
   subtitle = "菜鸟游戏服务器开发"
   keywords = "C++, Lua, Skynet   TypeScript, Node.js"
-  description = "菜鸟游戏服务器开发"
-  busuanzi = true #启用不算子网页统计
-  googleAd = ""  #ca-pub-xxxxxxxxxxxxxx
+  # description = "菜鸟游戏服务器开发"
+  # busuanzi = false #启用不算子网页统计
+  # googleAd = ""  #ca-pub-xxxxxxxxxxxxxx
   localSearch = true # 启用本地搜索
 
   # 这里我存放在了主题的static文件夹里，根目录的似乎也可以
@@ -37,17 +37,8 @@ summaryLength = 140
   # 全局开关，你也可以在每一篇内容的 front matter 中针对单篇内容关闭或开启某些功能
   toc = true  # 是否开启目录
 
-# 配置 utteranc评论,教程参考 https://utteranc.es/
-[params.utteranc]
-  enable = true
-  repo = "https://github.com/RealHath/RealHath.github.io" #换成自己得
-  issueTerm = "pathname"
-  theme = "github-light"
-
-# 开启版权声明，协议名字和链接都可以换
-[params.cc]
-    name = "知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议"
-    link = "https://creativecommons.org/licenses/by-nc-nd/4.0/"
+  # 文章摘要长度，如果超过长度会省略后面的内容。优先输出文章头的description
+  summaryLength = 140
 
 # 配置代码高亮
 [markup]

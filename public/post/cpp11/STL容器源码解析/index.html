@@ -1,12 +1,10 @@
 <!doctype html>
-<html lang="zh-CN">
+<html lang="en-us">
 <head>
 
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <meta name="referrer" content="no-referrer-when-downgrade">
     
 
     <title>STL容器源码解析 | RealHath的博客</title>
@@ -132,7 +130,7 @@
     }
 </style>
 <div class="post-toc" style="position: absolute; top: 188px;" onmousemove="changeDiv()" onmouseout="resetDiv()">
-    <h2 class="post-toc-title">Table of Contents</h2>
+    <h2 class="post-toc-title">blob catalog</h2>
     <div class="post-toc-content">
         <nav id="TableOfContents">
   <ul>
@@ -267,16 +265,10 @@
 
 
         
-        <div class="post-meta">
-            <span id="busuanzi_container_page_pv">&nbsp;|
-                <span id="busuanzi_value_page_pv"></span> <span>reads</span>
-            </span>
-        </div>
-        
         
         <div class="clear" style="display: none">
             <div class="toc-article">
-                <div class="toc-title">Table of Contents</div>
+                <div class="toc-title">blob catalog</div>
             </div>
         </div>
         
@@ -618,15 +610,6 @@ push值进去后，会创建一个新结点，这个节点继承了虚节点，�
         </div>
 
         
-<div class="post-archive">
-    <ul class="post-copyright">
-        <li><strong>Author: </strong><a rel="author" href="https://realhath.github.io/">RealHath</a></li>
-        <li style="word-break:break-all"><strong>Link: </strong><a href="https://realhath.github.io/post/cpp11/STL%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/">https://realhath.github.io/post/cpp11/STL%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/</a></li>
-        <li><strong>License: </strong>This work is under a <a rel="license" href="https://creativecommons.org/licenses/by-nc-nd/4.0/">知识共享署名-非商业性使用-禁止演绎 4.0 国际许可协议</a>. Kindly fulfill the requirements of the aforementioned License when adapting or creating a derivative of this work.</li>
-    </ul>
-</div>
-<br/>
-
 
 
         
@@ -666,41 +649,12 @@ push值进去后，会创建一个新结点，这个节点继承了虚节点，�
 
     
     
-    <div class="post bg-white">
-      <script src="https://utteranc.es/client.js"
-            repo= "https://github.com/RealHath/RealHath.github.io"
-            issue-term="pathname"
-            theme="github-light"
-            crossorigin="anonymous"
-            async>
-      </script>
-    </div>
-    
     
     
 
 </div>
 
-                    <footer id="footer">
-    <div>
-        &copy; 2023 <a href="https://realhath.github.io/">RealHath的博客 By RealHath</a>
-        
-    </div>
-    <br />
-    <div>
-        <div class="github-badge">
-            <a href="https://gohugo.io/" target="_black" rel="nofollow"><span class="badge-subject">Powered by</span><span class="badge-value bg-blue">Hugo</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://www.flysnow.org/" target="_black"><span class="badge-subject">Design by</span><span class="badge-value bg-brightgreen">飞雪无情</span></a>
-        </div>
-        <div class="github-badge">
-            <a href="https://github.com/flysnow-org/maupassant-hugo" target="_black"><span class="badge-subject">Theme</span><span class="badge-value bg-yellowgreen">Maupassant</span></a>
-        </div>
-    </div>
-</footer>
-
-
+                    
     
     
     <script type="text/javascript">
@@ -791,8 +745,6 @@ div.highlight:hover .copy-code,pre:hover .copy-code {
 </script>
 
 
-    <script type="text/javascript" src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js" async></script>
-
 
 
 
@@ -813,43 +765,43 @@ div.highlight:hover .copy-code,pre:hover .copy-code {
 <ul class="widget-list">
     
     <li>
-        <a href="https://realhath.github.io/post/cpp11/STL%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="STL容器源码解析" target="_blank">STL容器源码解析</a>
+        <a href="https://realhath.github.io/post/cpp11/STL%E5%AE%B9%E5%99%A8%E6%BA%90%E7%A0%81%E8%A7%A3%E6%9E%90/" title="STL容器源码解析" target="_blank">1. STL容器源码解析</a>
     </li>
     
     <li>
-        <a href="https://realhath.github.io/post/cpp11/nullptrshared_ptrunique_ptrweak_ptr/" title="nullptr、shared_ptr、unique_ptr、weak_ptr" target="_blank">nullptr、shared_ptr、unique_ptr、weak_ptr</a>
+        <a href="https://realhath.github.io/post/cpp11/nullptrshared_ptrunique_ptrweak_ptr/" title="nullptr、shared_ptr、unique_ptr、weak_ptr" target="_blank">2. nullptr、shared_ptr、unique_ptr、weak_ptr</a>
     </li>
     
     <li>
-        <a href="https://realhath.github.io/post/cpp11/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0/" title="右值引用、移动构造" target="_blank">右值引用、移动构造</a>
+        <a href="https://realhath.github.io/post/cpp11/%E5%8F%B3%E5%80%BC%E5%BC%95%E7%94%A8%E7%A7%BB%E5%8A%A8%E6%9E%84%E9%80%A0/" title="右值引用、移动构造" target="_blank">3. 右值引用、移动构造</a>
     </li>
     
     <li>
-        <a href="https://realhath.github.io/post/cpp11/for%E5%BE%AA%E7%8E%AFconstexpr%E4%BF%AE%E9%A5%B0%E7%AC%A6long-long/" title="for循环、constexpr修饰符、long long" target="_blank">for循环、constexpr修饰符、long long</a>
+        <a href="https://realhath.github.io/post/cpp11/for%E5%BE%AA%E7%8E%AFconstexpr%E4%BF%AE%E9%A5%B0%E7%AC%A6long-long/" title="for循环、constexpr修饰符、long long" target="_blank">4. for循环、constexpr修饰符、long long</a>
     </li>
     
     <li>
-        <a href="https://realhath.github.io/post/cpp11/usinglambda%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0/" title="using，lambda匿名函数，模板默认参数" target="_blank">using，lambda匿名函数，模板默认参数</a>
+        <a href="https://realhath.github.io/post/cpp11/usinglambda%E5%8C%BF%E5%90%8D%E5%87%BD%E6%95%B0%E6%A8%A1%E6%9D%BF%E9%BB%98%E8%AE%A4%E5%8F%82%E6%95%B0/" title="using，lambda匿名函数，模板默认参数" target="_blank">5. using，lambda匿名函数，模板默认参数</a>
     </li>
     
     <li>
-        <a href="https://realhath.github.io/post/cpp11/auto%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BCdecltype%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B%E5%90%8E%E7%BD%AE/" title="auto类型推导、decltype类型推导、返回值类型后置" target="_blank">auto类型推导、decltype类型推导、返回值类型后置</a>
+        <a href="https://realhath.github.io/post/cpp11/auto%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BCdecltype%E7%B1%BB%E5%9E%8B%E6%8E%A8%E5%AF%BC%E8%BF%94%E5%9B%9E%E5%80%BC%E7%B1%BB%E5%9E%8B%E5%90%8E%E7%BD%AE/" title="auto类型推导、decltype类型推导、返回值类型后置" target="_blank">6. auto类型推导、decltype类型推导、返回值类型后置</a>
     </li>
     
     <li>
-        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL3setmapSTL%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1/" title="C&#43;&#43; STL3：set、map、STL函数对象" target="_blank">C&#43;&#43; STL3：set、map、STL函数对象</a>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL3setmapSTL%E5%87%BD%E6%95%B0%E5%AF%B9%E8%B1%A1/" title="C&#43;&#43; STL3：set、map、STL函数对象" target="_blank">7. C&#43;&#43; STL3：set、map、STL函数对象</a>
     </li>
     
     <li>
-        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL2stackqueuelist/" title="C&#43;&#43; STL2：stack、queue、list" target="_blank">C&#43;&#43; STL2：stack、queue、list</a>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL2stackqueuelist/" title="C&#43;&#43; STL2：stack、queue、list" target="_blank">8. C&#43;&#43; STL2：stack、queue、list</a>
     </li>
     
     <li>
-        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL1vectorstringdeque/" title="C&#43;&#43; STL1：vector、string、deque" target="_blank">C&#43;&#43; STL1：vector、string、deque</a>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-STL1vectorstringdeque/" title="C&#43;&#43; STL1：vector、string、deque" target="_blank">9. C&#43;&#43; STL1：vector、string、deque</a>
     </li>
     
     <li>
-        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A8%A1%E6%9D%BF/" title="C&#43;&#43; 模板" target="_blank">C&#43;&#43; 模板</a>
+        <a href="https://realhath.github.io/post/cpp/C&#43;&#43;-%E6%A8%A1%E6%9D%BF/" title="C&#43;&#43; 模板" target="_blank">10. C&#43;&#43; 模板</a>
     </li>
     
 </ul>
