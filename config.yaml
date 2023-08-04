@@ -57,7 +57,7 @@ params:
 
     sidebar:
         emoji: 😅
-        subtitle: Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+        subtitle: 菜鸟游戏服务器开发
         avatar:
             enabled: true
             local: true
@@ -73,7 +73,7 @@ params:
 
     comments:
         enabled: true
-        provider: disqus
+        provider: utterances
 
         disqusjs:
             shortname:
@@ -85,7 +85,7 @@ params:
         utterances:
             repo: https://github.com/RealHath/RealHath.github.io
             issueTerm: pathname
-            label: "blob"
+            label: blob
 
         remark42:
             host:
