@@ -1,7 +1,7 @@
 ---
 title: About
 description: 菜鸡游戏服务器开发
-date: 2023-08-02
+# date: 2023-08-02
 aliases:
   - about-us
   - about-hugo

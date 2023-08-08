@@ -38,5 +38,5 @@ function highlightMarkdownFiles(dirPath: string): void {
 }
 
 // 调用函数并传入要处理的路径
-const targetDir = '/root/myblob/content/post/cpp11'; // 修改为你的目标路径
+const targetDir = '../content/post/game/'; // 修改为你的目标路径
 highlightMarkdownFiles(targetDir);
