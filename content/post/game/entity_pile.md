@@ -1,9 +1,9 @@
 ---
-title: 道具堆叠，道具x99的实现
-description: 道具堆叠，道具x99的实现
+title: 道具、实体堆叠
+description: 道具x99的实现
 date: 2023-08-07
 categories: ["游戏"]
-tags: ["游戏", "业务逻辑"]
+tags: ["游戏", "游戏业务逻辑"]
 ---
 
 ## 道具堆叠
