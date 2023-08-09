@@ -4,11 +4,11 @@ description: 利用lua协程的特性去优化事件回调内存占用高的情�
 date: 2023-08-09
 categories: ["游戏"]
 tags: ["游戏", "游戏优化"]
-
-draft: true
 ---
 
 ## 小程序项目
+
+skynet，lua
 
 ### 背景
 
@@ -20,15 +20,133 @@ draft: true
 
 1. 多个模块都可以注册一个同名事件，一次触发就能执行多个事件
 
+### 一个简单的事件管理类
+
+```lua
+-- constructor
+function EventMgr:ctor()
+    self._evList = {}
+end
+
+---监听事件
+---@param obj any
+---@param ev string
+---@param func string
+function EventMgr:observe(obj, ev, func)
+    local tb = self._evList[ev] or {}
+    table.insert(tb, { obj, func })
+end
+
+---取消事件
+---@param obj any
+---@param ev string
+function EventMgr:cancel(obj, ev)
+    local tb = self._evList[ev] or {}
+    for i, v in ipairs(tb) do
+        if v[1] == obj then
+            table.remove(tb, i)
+        end
+    end
+end
+
+---触发
+---@param ev string
+---@param ... any[]
+function EventMgr:trigger(ev, ...)
+    local tb = self._evList[ev] or {}
+    for i, v in ipairs(tb) do
+        skynet.fork(function()
+            local ok, ret = pcall(v[1][v[2]], v[1], ...)
+            if not ok then
+                print("error")
+            end
+        end)
+    end
+end
+
+```
+
+
+
 ### 旧版实现
 
 #### 思路
 
+当触发事件的时候，为所有注册了同名事件的对象都fork一个协程去执行
+
 #### 问题
+
+引用skynet.fork源码
+
+```lua
+local function co_create(f)
+    -- 从协程池中获取一个协程
+	local co = tremove(coroutine_pool)
+	if co == nil then
+		co = coroutine_create(function(...)
+            -- 执行逻辑
+			f(...)
+			while true do
+				local session = session_coroutine_id[co]
+				if session and session ~= 0 then
+					local source = debug.getinfo(f,"S")
+					skynet.error(string.format("Maybe forgot response session %s from %s : %s:%d",
+						session,
+						skynet.address(session_coroutine_address[co]),
+						source.source, source.linedefined))
+				end
+				-- coroutine exit
+				local tag = session_coroutine_tracetag[co]
+				if tag ~= nil then
+					if tag then c.trace(tag, "end")	end
+					session_coroutine_tracetag[co] = nil
+				end
+				local address = session_coroutine_address[co]
+				if address then
+					session_coroutine_id[co] = nil
+					session_coroutine_address[co] = nil
+				end
+
+				-- recycle co into pool
+				f = nil
+                -- 协程执行完后再放回协程池
+				coroutine_pool[#coroutine_pool+1] = co
+				-- recv new main function f
+				f = coroutine_yield "SUSPEND"
+				f(coroutine_yield())
+			end
+		end)
+	else
+		-- pass the main function f to coroutine, and restore running thread
+		local running = running_thread
+		coroutine_resume(co, f)
+		running_thread = running
+	end
+	return co
+end
+```
+
+
+
+假设当前事件的回调函数特别多的时候，这时候如果协程池`coroutine_pool`里的协程数不足，则会创建协程`coroutine_create`。
+
+为每个事件都创建一个协程，协程执行完之后协程不会自动释放，而是会放回协程池`coroutine_pool[#coroutine_pool+1] = co`，那么内存就会一直占用。
+
+#### 执行流程
+![](/perf/事件管理_未优化.png)
 
 ### 优化实现
 
 #### 思路
 
+要优化需要先知道协程的特性：{{< highlight >}}同一时间只能由一个协程在运行{{< /highlight >}}
+
 #### 解决问题
 
+1. 为第一个回调创建一个协程执行，同时创建下一个协程，执行回调
+2. 当第一个回调执行完，销毁协程，切换到下一个协程。下一个协程创建新的协程，执行回调
+
+这样最优情况下只存在两个协程，最坏情况下存在n个
+
+#### 执行流程
+![](/perf/事件管理.png)
