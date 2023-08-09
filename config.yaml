@@ -8,8 +8,12 @@ languages:
     en:
         languageName: English
         title: RealHath的博客
-        description: 菜鸟游戏服务器开发
         weight: 1
+        disabled: false
+        languageCode: en-US
+        languageDirection: ltr
+        params:
+            description: 菜鸟游戏服务器开发
     # zh-cn:
     #     languageName: 中文
     #     title: 演示站点
@@ -72,7 +76,7 @@ params:
             default: Licensed under CC BY-NC-SA 4.0
 
     comments:
-        enabled: true
+        enabled: false
         provider: utterances
 
         disqusjs:
