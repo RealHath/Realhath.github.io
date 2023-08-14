@@ -3,7 +3,7 @@ title: 事件管理器触发回调优化
 description: 利用lua协程的特性去优化事件回调内存占用高的情况
 date: 2023-08-09
 categories: ["游戏"]
-tags: ["游戏", "游戏优化"]
+tags: ["游戏", "游戏优化", "skynet", "lua"]
 ---
 
 ## 小程序项目
@@ -25,43 +25,50 @@ skynet，lua
 ```lua
 -- constructor
 function EventMgr:ctor()
-    self._evList = {}
+	self._eventList = {}
 end
 
 ---监听事件
 ---@param obj any
----@param ev string
+---@param event string
 ---@param func string
-function EventMgr:observe(obj, ev, func)
-    local tb = self._evList[ev] or {}
-    table.insert(tb, { obj, func })
+function EventMgr:observe(obj, event, func)
+	local obsList = self._eventList[event] or {}
+	table.insert(obsList, { obj = obj, func = func })
+	self._eventList[event] = obsList
 end
 
 ---取消事件
 ---@param obj any
----@param ev string
-function EventMgr:cancel(obj, ev)
-    local tb = self._evList[ev] or {}
-    for i, v in ipairs(tb) do
-        if v[1] == obj then
-            table.remove(tb, i)
-        end
-    end
+---@param event string
+function EventMgr:cancel(event, obj, func)
+	local obsList = self._eventList[event]
+	if not obsList then
+		return
+	end
+	for _, v in pairs(obsList) do
+		if v.obj == obj and v.func == func then
+			table.remove(obsList, i)
+		end
+	end
 end
 
 ---触发
----@param ev string
+---@param event string
 ---@param ... any[]
-function EventMgr:trigger(ev, ...)
-    local tb = self._evList[ev] or {}
-    for i, v in ipairs(tb) do
-        skynet.fork(function()
-            local ok, ret = pcall(v[1][v[2]], v[1], ...)
-            if not ok then
-                print("error")
-            end
-        end)
-    end
+function EventMgr:trigger(event, ...)
+	local obsList = self._eventList[event]
+	if not obsList then
+		return
+	end
+	skynet.fork(function()
+		for i, v in ipairs(obsList) do
+			local ok, ret = pcall(v.obj[v.func], v.obj, ...)
+			if not ok then
+				print("error")
+			end
+		end
+	end)
 end
 
 ```
@@ -133,6 +140,7 @@ end
 为每个事件都创建一个协程，协程执行完之后协程不会自动释放，而是会放回协程池`coroutine_pool[#coroutine_pool+1] = co`，那么内存就会一直占用。
 
 #### 执行流程
+
 ![](/perf/事件管理_未优化.png)
 
 ### 优化实现
@@ -141,6 +149,51 @@ end
 
 要优化需要先知道协程的特性：{{< highlight >}}同一时间只能由一个协程在运行{{< /highlight >}}
 
+
+```lua
+-- constructor
+function EventMgr:ctor()
+	self._eventList = {}
+
+	self._eventQueue = {}
+	self._count = 0
+end
+
+function EventMgr:consumeEvent()
+	if not next(self._eventQueue) then
+		return
+	end
+
+	skynet.fork(self.consumeEvent, self)
+	self._count = self._count + 1
+
+	local task = table.remove(self._eventQueue, 1);
+	for _, v in pairs(self._eventList[task.event]) do
+		local ok, ret = pcall(v.obj[v.func], v.obj, table.unpack(task.args))
+		if not ok then
+			print("error")
+		end
+	end
+end
+
+---触发
+---@param event string
+---@param ... any[]
+function EventMgr:trigger(event, ...)
+	local obsList = self._eventList[event]
+	if not obsList then
+		return
+	end
+
+	table.insert(self._eventQueue, { event = event, args = table.pack(...) })
+	if self._count <= 0 then
+		skynet.fork(self.consumeEvent, self)
+	end
+end
+```
+
+
+
 #### 解决问题
 
 1. 为第一个回调创建一个协程执行，同时创建下一个协程，执行回调
@@ -148,5 +201,8 @@ end
 
 这样最优情况下只存在两个协程，最坏情况下存在n个
 
+
+
 #### 执行流程
+
 ![](/perf/事件管理.png)
