@@ -3,7 +3,7 @@ title: 任务系统设计
 description: 包含两个项目的任务系统设计以及重构前后设计
 date: 2023-08-08
 categories: ["游戏"]
-tags: ["游戏", "游戏业务逻辑", "游戏模块设计"]
+tags: ["游戏", "游戏业务逻辑", "游戏模块设计", "TypeScript", "Lua"]
 
 draft: true
 ---

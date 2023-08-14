@@ -3,7 +3,7 @@ title: 事件管理器触发回调优化
 description: 利用lua协程的特性去优化事件回调内存占用高的情况
 date: 2023-08-09
 categories: ["游戏"]
-tags: ["游戏", "游戏优化", "skynet", "lua"]
+tags: ["游戏", "游戏优化", "Skynet", "Lua"]
 ---
 
 ## 小程序项目
