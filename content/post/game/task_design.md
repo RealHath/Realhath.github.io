@@ -16,8 +16,8 @@ lua, protobuf
 
 ```protobuf
 Enum TaskType {
-	UpLevel = 1101;		// 升级任务
-	UpSection = 1102;	// 升阶任务
+    UpLevel = 1101;        // 升级任务
+    UpSection = 1102;    // 升阶任务
 }
 ```
 
@@ -100,13 +100,13 @@ const enum enumTaskTarget {
 
 ```typescript
 class BaseTaskTargetNode {
-    progressVal: number;		// 当前任务进度值
-    status: EnumTaskStatus;		// 任务状态
-    task: Task;					// 所属的任务对象
+    progressVal: number;        // 当前任务进度值
+    status: EnumTaskStatus;        // 任务状态
+    task: Task;                    // 所属的任务对象
     
     
     public abstract getListenEventIds(): Array<EventID>;      // 需要注册的事件id
-    public abstract onTaskTargetEvent(evId: EventID, args: any): void;	// 事件回调
+    public abstract onTaskTargetEvent(evId: EventID, args: any): void;    // 事件回调
 }
 ```
 
@@ -118,8 +118,8 @@ class BaseTaskTargetNode {
 
 ```typescript
 class Task {
-    taskId: TaskId;						// 任务id
-    targetNodeDatas: Array<BaseTaskTargetNode>;	// 任务可能同时存在多个目标条件
+    taskId: TaskId;                        // 任务id
+    targetNodeDatas: Array<BaseTaskTargetNode>;    // 任务可能同时存在多个目标条件
 }
 ```
 
@@ -133,8 +133,8 @@ class Task {
 
 ```typescript
 class ModuleTask {
-    taskEvents: ModuleEventMgr;			// 二级事件管理器
-    curTasks: Map<TaskId, Task>;		// 正在进行中的任务
+    taskEvents: ModuleEventMgr;            // 二级事件管理器
+    curTasks: Map<TaskId, Task>;        // 正在进行中的任务
 }
 ```
 
@@ -158,7 +158,7 @@ class ModuleTask {
   // 工厂
   class TaskTargetFactory {
       private static _instance: TaskTargetFactory = new TaskTargetNodeFactory();
-     	
+         
       public get instance() {
           return this._instance;
       }
@@ -168,10 +168,10 @@ class ModuleTask {
           // TODO
       }
   
-  	  // 创建
+        // 创建
       public create(task: Task, taskTarget: Enum.enumTaskTarget): BaseTaskTargetNode {
           let node: BaseTaskTargetNode = null;
-  		// TODO
+          // TODO
           return node;
       }
   }

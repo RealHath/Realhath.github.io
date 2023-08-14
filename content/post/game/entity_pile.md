@@ -14,9 +14,9 @@ tags: ["游戏", "游戏业务逻辑", "TypeScript"]
 
 ```typescript
 class Item {
-    count: number;			// 数量
-    uid: Uid;	// 道具唯一id，类型不一定是数字或字符串
-    itemId: ItemId;			// 道具id
+    count: number;            // 数量
+    uid: Uid;    // 道具唯一id，类型不一定是数字或字符串
+    itemId: ItemId;            // 道具id
 }
 ```
 

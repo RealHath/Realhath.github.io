@@ -25,7 +25,7 @@ skynet，lua
 ```lua
 -- constructor
 function EventMgr:ctor()
-	self._eventList = {}
+    self._eventList = {}
 end
 
 ---监听事件
@@ -33,42 +33,42 @@ end
 ---@param event string
 ---@param func string
 function EventMgr:observe(obj, event, func)
-	local obsList = self._eventList[event] or {}
-	table.insert(obsList, { obj = obj, func = func })
-	self._eventList[event] = obsList
+    local obsList = self._eventList[event] or {}
+    table.insert(obsList, { obj = obj, func = func })
+    self._eventList[event] = obsList
 end
 
 ---取消事件
 ---@param obj any
 ---@param event string
 function EventMgr:cancel(event, obj, func)
-	local obsList = self._eventList[event]
-	if not obsList then
-		return
-	end
-	for _, v in pairs(obsList) do
-		if v.obj == obj and v.func == func then
-			table.remove(obsList, i)
-		end
-	end
+    local obsList = self._eventList[event]
+    if not obsList then
+        return
+    end
+    for _, v in pairs(obsList) do
+        if v.obj == obj and v.func == func then
+            table.remove(obsList, i)
+        end
+    end
 end
 
 ---触发
 ---@param event string
 ---@param ... any[]
 function EventMgr:trigger(event, ...)
-	local obsList = self._eventList[event]
-	if not obsList then
-		return
-	end
-	skynet.fork(function()
-		for i, v in ipairs(obsList) do
-			local ok, ret = pcall(v.obj[v.func], v.obj, ...)
-			if not ok then
-				print("error")
-			end
-		end
-	end)
+    local obsList = self._eventList[event]
+    if not obsList then
+        return
+    end
+    skynet.fork(function()
+        for i, v in ipairs(obsList) do
+            local ok, ret = pcall(v.obj[v.func], v.obj, ...)
+            if not ok then
+                print("error")
+            end
+        end
+    end)
 end
 
 ```
@@ -88,48 +88,31 @@ end
 ```lua
 local function co_create(f)
     -- 从协程池中获取一个协程
-	local co = tremove(coroutine_pool)
-	if co == nil then
-		co = coroutine_create(function(...)
+    local co = tremove(coroutine_pool)
+    if co == nil then
+        co = coroutine_create(function(...)
             -- 执行逻辑
-			f(...)
-			while true do
-				local session = session_coroutine_id[co]
-				if session and session ~= 0 then
-					local source = debug.getinfo(f,"S")
-					skynet.error(string.format("Maybe forgot response session %s from %s : %s:%d",
-						session,
-						skynet.address(session_coroutine_address[co]),
-						source.source, source.linedefined))
-				end
-				-- coroutine exit
-				local tag = session_coroutine_tracetag[co]
-				if tag ~= nil then
-					if tag then c.trace(tag, "end")	end
-					session_coroutine_tracetag[co] = nil
-				end
-				local address = session_coroutine_address[co]
-				if address then
-					session_coroutine_id[co] = nil
-					session_coroutine_address[co] = nil
-				end
+            f(...)
+            while true do
+                local session = session_coroutine_id[co]
+                
+                -- 执行逻辑
+                -- do sth
 
-				-- recycle co into pool
-				f = nil
+                -- recycle co into pool
+                f = nil
                 -- 协程执行完后再放回协程池
-				coroutine_pool[#coroutine_pool+1] = co
-				-- recv new main function f
-				f = coroutine_yield "SUSPEND"
-				f(coroutine_yield())
-			end
-		end)
-	else
-		-- pass the main function f to coroutine, and restore running thread
-		local running = running_thread
-		coroutine_resume(co, f)
-		running_thread = running
-	end
-	return co
+                coroutine_pool[#coroutine_pool+1] = co
+
+                -- recv new main function f
+                -- do sth
+            end
+        end)
+    else
+        -- pass the main function f to coroutine, and restore running thread
+        -- do sth
+    end
+    return co
 end
 ```
 
@@ -153,42 +136,42 @@ end
 ```lua
 -- constructor
 function EventMgr:ctor()
-	self._eventList = {}
+    self._eventList = {}
 
-	self._eventQueue = {}
-	self._count = 0
+    self._eventQueue = {}
+    self._count = 0
 end
 
 function EventMgr:consumeEvent()
-	if not next(self._eventQueue) then
-		return
-	end
+    if not next(self._eventQueue) then
+        return
+    end
 
-	skynet.fork(self.consumeEvent, self)
-	self._count = self._count + 1
+    skynet.fork(self.consumeEvent, self)
+    self._count = self._count + 1
 
-	local task = table.remove(self._eventQueue, 1);
-	for _, v in pairs(self._eventList[task.event]) do
-		local ok, ret = pcall(v.obj[v.func], v.obj, table.unpack(task.args))
-		if not ok then
-			print("error")
-		end
-	end
+    local task = table.remove(self._eventQueue, 1);
+    for _, v in pairs(self._eventList[task.event]) do
+        local ok, ret = pcall(v.obj[v.func], v.obj, table.unpack(task.args))
+        if not ok then
+            print("error")
+        end
+    end
 end
 
 ---触发
 ---@param event string
 ---@param ... any[]
 function EventMgr:trigger(event, ...)
-	local obsList = self._eventList[event]
-	if not obsList then
-		return
-	end
+    local obsList = self._eventList[event]
+    if not obsList then
+        return
+    end
 
-	table.insert(self._eventQueue, { event = event, args = table.pack(...) })
-	if self._count <= 0 then
-		skynet.fork(self.consumeEvent, self)
-	end
+    table.insert(self._eventQueue, { event = event, args = table.pack(...) })
+    if self._count <= 0 then
+        skynet.fork(self.consumeEvent, self)
+    end
 end
 ```
 
