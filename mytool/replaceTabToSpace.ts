@@ -21,11 +21,13 @@ function processFiles(folderPath: string): void {
 
 // 处理 .md 文件
 function processMdFile(filePath: string): void {
-    const content = fs.readFileSync(filePath, 'utf-8');
+    const content: string = fs.readFileSync(filePath, 'utf-8');
     const updatedContent = content.replace(/\t/g, '    '); // 将制表符替换为 4 个空格
 
-    fs.writeFileSync(filePath, updatedContent);
-    console.log(`Processed: ${filePath}`);
+    if (content !== updatedContent) {
+        fs.writeFileSync(filePath, updatedContent);
+        console.log(`Processed: ${filePath}`);
+    }
 }
 
 // 执行脚本
