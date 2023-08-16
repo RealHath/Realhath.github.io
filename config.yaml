@@ -88,7 +88,7 @@ params:
 
         utterances:
             repo: RealHath/RealHath.github.io
-            issueTerm: pathname
+            issueTerm: title
             label: blob
 
         remark42:

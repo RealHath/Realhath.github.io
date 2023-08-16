@@ -37,11 +37,60 @@ yum install npm		# 安装npm
 
 ## tsconfig初始化
 
+生成`tsconfig.json`，自定义编译选项
+
+```bash
 tsc init
+```
 
-配置
+---
 
-## 安装项目依赖
+常用配置
+
+```json
+{
+  "compilerOptions": {
+    /* Language and Environment */
+    "target": "ES2022", /* Set the JavaScript language version for emitted JavaScript and include compatible library declarations. */
+    /* Modules */
+    "module": "commonjs", /* Specify what module code is generated. */
+    /* Emit */
+    "outDir": "publish", /* Specify an output folder for all emitted files. */
+    "removeComments": true, /* Disable emitting comments. */
+    "noEmitHelpers": true, /* Disable generating custom helper functions like '__extends' in compiled output. */
+    "noEmitOnError": true, /* Disable emitting files if any type checking errors are reported. */
+    /* Interop Constraints */
+    "esModuleInterop": false, /* Emit additional JavaScript to ease support for importing CommonJS modules. This enables 'allowSyntheticDefaultImports' for type compatibility. */
+    "forceConsistentCasingInFileNames": true, /* Ensure that casing is correct in imports. */
+    /* Type Checking */
+    "strict": true, /* Enable all strict type-checking options. */
+    "noImplicitAny": true, /* Enable error reporting for expressions and declarations with an implied 'any' type. */
+    "strictNullChecks": false, /* When type checking, take into account 'null' and 'undefined'. */
+    "strictFunctionTypes": true, /* When assigning functions, check to ensure parameters and the return values are subtype-compatible. */
+    "strictBindCallApply": true, /* Check that the arguments for 'bind', 'call', and 'apply' methods match the original function. */
+    "strictPropertyInitialization": false, /* Check for class properties that are declared but not set in the constructor. */
+    "noImplicitThis": true, /* Enable error reporting when 'this' is given the type 'any'. */
+    "alwaysStrict": true, /* Ensure 'use strict' is always emitted. */
+    "noImplicitReturns": true, /* Enable error reporting for codepaths that do not explicitly return in a function. */
+    "skipLibCheck": true /* Skip type checking all .d.ts files. */
+  },
+  "exclude": [
+    "node_modules"
+  ],
+  "include": [
+    "src/*",
+    "src/**/*"
+  ]
+}
+```
+
+## 创建项目
+
+```bash
+npm init
+```
+
+### 安装项目依赖
 
 ```bash
 npm install typescript --save	# 安装ts
@@ -55,9 +104,7 @@ npm install @types/node-telegram-bot-api  --save-dev
 npm install log4js --save
 ```
 
-## 创建项目
 
-npm init
 
 # 项目代码
 
@@ -250,8 +297,11 @@ class Main {
 Main.instance.startNetwork();
 ```
 
-
-
 # 运行结果
+
+```bash
+tsc
+node publish/main/main.js
+```
 
 ![telegram机器人运行结果](/note/telegram机器人运行结果.png)
