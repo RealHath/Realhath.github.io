@@ -72,8 +72,9 @@ params:
         toc: true
         readingTime: true
         license:
-            enabled: false
-            default: Licensed under CC BY-NC-SA 4.0
+            enabled: true
+            # default: Licensed under CC BY-NC-SA 4.0
+            default: Licensed under <b><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">CC BY-NC-SA 4.0</a></b>
 
     comments:
         enabled: true
@@ -228,7 +229,7 @@ markup:
     goldmark:
         renderer:
             ## Set to true if you have HTML content inside Markdown
-            unsafe: false
+            unsafe: true
     tableOfContents:
         endLevel: 4
         ordered: true
