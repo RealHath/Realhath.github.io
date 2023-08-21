@@ -4,6 +4,7 @@ description: 记录一下连接telegram机器人的步骤，也是创建node项�
 date: 2023-08-15
 categories: ["笔记"]
 tags: ["TypeScript", "Telegram"]
+lastmod: 2023-08-15
 ---
 
 # 环境

@@ -1,9 +1,10 @@
 ---
-title: CSAPP第一章总结
-description: CSAPP第一章总结 计算机系统漫游
+title: CSAPP第一章：计算机系统漫游
+description: CSAPP第一章总结
 date: 2023-08-18
 categories: ["深入理解操作系统"]
 tags: ["深入理解操作系统"]
+lastmod: 2023-08-18
 ---
 
 
