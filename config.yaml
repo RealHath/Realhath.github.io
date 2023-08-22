@@ -1,7 +1,7 @@
 baseurl: https://realhath.github.io/
 languageCode: en-us
 theme: hugo-theme-stack
-paginate: 5
+paginate: 7
 title: RealHath的博客
 
 languages:
