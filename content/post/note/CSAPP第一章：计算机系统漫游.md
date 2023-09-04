@@ -47,7 +47,7 @@ gcc -S test.i -o test.s
 
 编译器（ccl）将预处理完的文本文件hello.i进行一系列的词法分析、语法分析、语义分析和优化，翻译成文本文件hello.s，它包含一个汇编语言程序。
 
-```assembly
+```asm
 main:
     subq    $8, %rsp
     movl    $.LCO, %edi
