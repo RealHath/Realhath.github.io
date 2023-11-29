@@ -1,6 +1,6 @@
 ---
 title: RPC
-description: RPC
+description: RPC理解
 date: 2023-11-29
 categories: ["RPC"]
 tags: ["RPC"]
@@ -40,7 +40,10 @@ tags: ["RPC"]
 
 stub通常就是用来实现网络调用，数据封装等细节的一个类，是一个设计思路并非必须的
 
-> 引用自简书《RPC中常见的Stub怎么理解》
+> 作者：鸡哥cy
+链接：https://www.jianshu.com/p/9ccdea882688
+来源：简书
+著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。
 
 ![](/note/rpc.jpg)
 
@@ -64,3 +67,8 @@ stub通常就是用来实现网络调用，数据封装等细节的一个类，�
 
 RPC的处理流程，和RFC有些类似，就是也要为请求生成唯一的一个session id，并且一起发给接收者，只是发起请求的地方会被要求挂起等待，等到回应包回来时，将挂起的程序唤醒，并传回回应消息，接着执行下面的流程。（详见RFC5531 The remote procedure call model is similar.  One thread of control logically winds through two processes: the caller's process and a server's process.  **The caller first sends a call message to the server process and waits (blocks) for a reply message.**  The call message includes the procedure's parameters, and the reply message includes the procedure's results.  Once the reply message is received, the results of the procedure are extracted, and the caller's execution is resumed.）
 
+
+---
+
+> SRPC架构介绍 - Sogou基于Workflow的自研RPC框架 - 1412的文章 - 知乎
+https://zhuanlan.zhihu.com/p/249071112
