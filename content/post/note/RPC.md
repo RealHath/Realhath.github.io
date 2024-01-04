@@ -4,7 +4,7 @@ description: RPC理解
 date: 2023-11-29
 categories: ["RPC"]
 tags: ["RPC"]
-# lastmod: 2023-08-18
+lastmod: 2023-11-29
 ---
 
 # RPC
