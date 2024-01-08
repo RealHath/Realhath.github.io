@@ -1,5 +1,5 @@
-import * as fs from 'fs';
-import * as path from 'path';
+import fs from 'fs';
+import path from 'path';
 
 // 定义要处理的文件夹路径
 const folderPath = '../content/post'; // 修改为实际路径
