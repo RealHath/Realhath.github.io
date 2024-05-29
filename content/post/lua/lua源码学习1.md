@@ -1,6 +1,6 @@
 ---
 title: lua源码学习1
-description: title: lua源码学习1
+description: lua源码学习1
 date: 2024-05-29
 categories: ["lua"]
 tags: ["lua"]
@@ -184,4 +184,4 @@ lua_State中定义了两个`CallInfo`结构体，分别是`base_ci`和`ci`。`ba
 
 # 参考链接
 1. https://manistein.github.io/blog/post/program/build-a-lua-interpreter/构建lua解释器part1/
-2. https://juejin.cn/s/lua%20light%20c%20function
+2. https://juejin.cn/s/lua%20light%20c%20function
