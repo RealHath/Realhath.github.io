@@ -182,6 +182,173 @@ lua_State中定义了两个`CallInfo`结构体，分别是`base_ci`和`ci`。`ba
 创建ci的时候，会分配LUA_MINSTACK（官方定义是20个单位）的栈空间，用于函数调用。
 ![函数调用流程CallInfo.png](/lua/函数调用流程CallInfo.png)
 
+# 函数调用流程
+先创建一个lua虚拟机实例，将要调用的函数和所需参数入栈，调用函数。
+c函数里取出栈中参数，计算结果后将结果入栈，函数执行完从栈中取出返回值
+
+实例
+```c
+// 定义一个加法function
+static int add_op(lua_State *L)
+{
+    int left = luaL_tointeger(L, -2);  // 取出栈里第二个元素
+    int right = luaL_tointeger(L, -1); // 取出栈里第一个元素
+
+    lua_pushinteger(L, left + right);
+
+    return 1;
+}
+
+int test_main11()
+{
+    lua_State *L = luaL_newstate(); // 创建一个lua虚拟机实例
+    luaL_pushcfunction(L, &add_op); // 将要被调用的函数add_op入栈
+    luaL_pushinteger(L, 33);        // 参数入栈
+    luaL_pushinteger(L, 21);
+    luaL_pcall(L, 2, 1);             // 调用add_op函数，并将结果push到栈中。
+                                     // 第二个参数是参数数量，第三个参数是返回值数量
+    int res = luaL_tointeger(L, -1); // 取出栈里最顶的元素
+    printf("result is %d\n", res);
+    luaL_pop(L); // 结果出栈
+
+    luaL_close(L); // 销毁虚拟机状态实例
+    return 0;
+}
+```
+---
+在lua中，函数调用可以是lua函数调用lua函数，也可以c函数调用lua函数。当c函数调用lua函数时，需要创建`CallInfo`结构体(lua_State中定义)来表示这个调用信息。
+lua_State中定义了两个`CallInfo`结构体，分别是`base_ci`和`ci`。`base_ci`是最初的C调用lua的信息，可以理解成头结点；`ci`是lua调用lua的信息。
+当lua函数调用lua函数的时候，会新创建`CallInfo`结构体，然后头结点的next指针会指向新的`CallInfo`结构体，同时新的`CallInfo`结构体的previous指针会指向头结点，这样就能表述一个调用链，能正确返回结果。
+创建ci的时候，会分配LUA_MINSTACK（官方定义是20个单位）的栈空间，用于函数调用。
+![函数调用流程CallInfo.png](https://note.youdao.com/yws/res/22334/WEBRESOURCE45e003bcf8cd2ee50daf51b667635cfd)
+
+# 函数调用实现
+## 创建虚拟机
+传入一个内存分配函数，这个内存分配函数的参数`ud`和`osize`是用户自定义数据和数据大小
+```c
+static void *l_alloc (void *ud, void *ptr, size_t osize, size_t nsize) {
+  (void)ud; (void)osize;  /* not used */
+  if (nsize == 0) {
+    free(ptr);
+    return NULL;
+  }
+  else
+    return realloc(ptr, nsize);
+}
+
+LUALIB_API lua_State *luaL_newstate (void) {
+  lua_State *L = lua_newstate(l_alloc, NULL);
+  if (l_likely(L)) {
+    lua_atpanic(L, &panic);
+    lua_setwarnf(L, warnfoff, L);  /* default is warnings off */
+  }
+  return L;
+}
+```
+
+luaL_newstate函数实际是调用另一个函数`LUA_API lua_State *lua_newstate (lua_Alloc f, void *ud)`
+lua_newstate实际上是为global_State和lua_State开辟内存，并完成初始化。
+```c
+struct lua_State* lua_newstate(lua_Alloc alloc, void* ud) {
+    struct global_State* g;
+    struct lua_State* L;
+    
+    struct LG* lg = (struct LG*)(*alloc)(ud, NULL, LUA_TTHREAD, sizeof(struct LG));
+    if (!lg) {
+        return NULL;
+    }
+    g = &lg->g;
+    g->ud = ud;
+    g->frealloc = alloc;
+    g->panic = NULL;
+
+    // ...省略
+    
+    L = &lg->l.l;
+    G(L) = g;
+    g->mainthread = L;
+
+    stack_init(L);
+
+    return L;
+}
+```
+
+这里是初始化虚拟机的栈，每个lua虚拟机的栈大小是`BASIC_STACK_SIZE + EXTRA_SPACE`，栈顶stack_top是不可访问的，stack_top++是首个可访问地址。stack_last之后是EXTRA_SPACE，可能是作为缓冲防止爆栈。
+```c
+static void stack_init (lua_State *L1, lua_State *L) {
+  int i; CallInfo *ci;
+  /* initialize stack array */
+  L1->stack.p = luaM_newvector(L, BASIC_STACK_SIZE + EXTRA_STACK, StackValue);
+  L1->tbclist.p = L1->stack.p;
+  for (i = 0; i < BASIC_STACK_SIZE + EXTRA_STACK; i++)
+    setnilvalue(s2v(L1->stack.p + i));  /* erase new stack */
+  L1->top.p = L1->stack.p;
+  L1->stack_last.p = L1->stack.p + BASIC_STACK_SIZE;
+  /* initialize first ci */
+  ci = &L1->base_ci;
+  ci->next = ci->previous = NULL;
+  ci->callstatus = CIST_C;
+  ci->func.p = L1->top.p;
+  ci->u.c.k = NULL;
+  ci->nresults = 0;
+  setnilvalue(s2v(L1->top.p));  /* 'function' entry for this 'ci' */
+  L1->top.p++;
+  ci->top.p = L1->top.p + LUA_MINSTACK;
+  L1->ci = ci;
+}
+```
+
+## 销毁虚拟机
+close_state先释放LG，然后调用freestack，这个函数先调用luaE_freeCI释放CallInfo（函数信息），然后再调用luaM_freearray释放栈空间
+```c
+/*
+** Free memory
+*/
+void luaM_free_ (lua_State *L, void *block, size_t osize) {
+  global_State *g = G(L);
+  lua_assert((osize == 0) == (block == NULL));
+  // #define callfrealloc(g,block,os,ns)    ((*g->frealloc)(g->ud, block, os, ns))
+  callfrealloc(g, block, osize, 0);
+  g->GCdebt -= osize;
+}
+
+
+static void freestack (lua_State *L) {
+  if (L->stack.p == NULL)
+    return;  /* stack not completely built yet */
+  L->ci = &L->base_ci;  /* free the entire 'ci' list */
+  luaE_freeCI(L);
+  lua_assert(L->nci == 0);
+  luaM_freearray(L, L->stack.p, stacksize(L) + EXTRA_STACK);  /* free stack */
+}
+
+static void close_state (lua_State *L) {
+  global_State *g = G(L);
+  if (!completestate(g))  /* closing a partially built state? */
+    luaC_freeallobjects(L);  /* just collect its objects */
+  else {  /* closing a fully built state */
+    L->ci = &L->base_ci;  /* unwind CallInfo list */
+    luaD_closeprotected(L, 1, LUA_OK);  /* close all upvalues */
+    luaC_freeallobjects(L);  /* collect all objects */
+    luai_userstateclose(L);
+  }
+  luaM_freearray(L, G(L)->strt.hash, G(L)->strt.size);
+  freestack(L);     // 清空栈
+  lua_assert(gettotalbytes(g) == sizeof(LG));
+  (*g->frealloc)(g->ud, fromstate(L), sizeof(LG), 0);  /* free main block */
+}
+```
+
+## 参数入栈
+
+
+# 总结
+创建lua虚拟机（lua_State结构）的时候，会按照传入的内存分配函数分配内存，然后创建一个lua_State和global_State。
+lua_State是虚拟机本身，给他分配了BASIC_STACK_SIZE+EXTRA_SPACE大小的栈空间，这是虚拟机的栈
+global_State用于管理gc，内存分配释放等相关信息
+
+
 # 参考链接
 1. https://manistein.github.io/blog/post/program/build-a-lua-interpreter/构建lua解释器part1/
 2. https://juejin.cn/s/lua%20light%20c%20function
